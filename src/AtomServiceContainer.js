@@ -20,9 +20,9 @@ import type {
   DebuggerConfigurationProvider,
   IProcessConfig,
   VsAdapterType,
-} from 'nuclide-debugger-common';
+} from '@atom-ide-community/nuclide-debugger-common';
 
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 
 type raiseNativeNotificationFunc = ?(
   title: string,

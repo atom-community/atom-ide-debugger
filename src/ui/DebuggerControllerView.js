@@ -12,10 +12,10 @@
 
 import type {IDebugService} from '../types';
 
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
 import * as React from 'react';
-import {LoadingSpinner} from 'nuclide-commons-ui/LoadingSpinner';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import {LoadingSpinner} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import {Observable} from 'rxjs';
 import {DebuggerMode} from '../constants';
 

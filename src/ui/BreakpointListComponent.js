@@ -11,24 +11,24 @@
  */
 
 import type {IBreakpoint, IDebugService, IExceptionBreakpoint} from '../types';
-import type {NuclideUri} from 'nuclide-commons/nuclideUri';
+import type {NuclideUri} from '@atom-ide-community/nuclide-commons/nuclideUri';
 
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import invariant from 'assert';
 import * as React from 'react';
-import nuclideUri from 'nuclide-commons/nuclideUri';
-import {Checkbox} from 'nuclide-commons-ui/Checkbox';
-import {track} from 'nuclide-commons/analytics';
-import {ListView, ListViewItem} from 'nuclide-commons-ui/ListView';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
+import {Checkbox} from '@atom-ide-community/nuclide-commons-ui/Checkbox';
+import {track} from '@atom-ide-community/nuclide-commons/analytics';
+import {ListView, ListViewItem} from '@atom-ide-community/nuclide-commons-ui/ListView';
 import classnames from 'classnames';
-import {Icon} from 'nuclide-commons-ui/Icon';
+import {Icon} from '@atom-ide-community/nuclide-commons-ui/Icon';
 import {Observable} from 'rxjs';
 import {AnalyticsEvents} from '../constants';
 import {openSourceLocation} from '../utils';
-import {Section} from 'nuclide-commons-ui/Section';
-import featureConfig from 'nuclide-commons-atom/feature-config';
-import {observeProjectPathsAll} from 'nuclide-commons-atom/projects';
-import passesGK from 'nuclide-commons/passesGK';
+import {Section} from '@atom-ide-community/nuclide-commons-ui/Section';
+import featureConfig from '@atom-ide-community/nuclide-commons-atom/feature-config';
+import {observeProjectPathsAll} from '@atom-ide-community/nuclide-commons-atom/projects';
+import passesGK from '@atom-ide-community/nuclide-commons/passesGK';
 
 type Props = {|
   service: IDebugService,

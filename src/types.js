@@ -40,10 +40,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 import type {Observable} from 'rxjs';
 import * as DebugProtocol from 'vscode-debugprotocol';
-import type {IProcessConfig} from 'nuclide-debugger-common';
+import type {IProcessConfig} from '@atom-ide-community/nuclide-debugger-common';
 
 export interface RemoteDebuggerService {
   onDidChangeDebuggerSessions(

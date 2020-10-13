@@ -13,7 +13,7 @@
 import type {IDebugService} from '../types';
 
 import classnames from 'classnames';
-import {Block} from 'nuclide-commons-ui/Block';
+import {Block} from '@atom-ide-community/nuclide-commons-ui/Block';
 import * as React from 'react';
 import DebuggerProcessComponent from './DebuggerProcessComponent';
 

@@ -12,8 +12,8 @@
 
 import type {DebuggerModeType, IDebugService} from '../types';
 
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import * as React from 'react';
 import {Observable} from 'rxjs';
 import DebuggerSteppingComponent from './DebuggerSteppingComponent';

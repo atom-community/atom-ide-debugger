@@ -12,7 +12,7 @@
 
 import type {IDebugService} from './types';
 
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import BreakpointDisplayController from './BreakpointDisplayController';
 
 export default class BreakpointManager {

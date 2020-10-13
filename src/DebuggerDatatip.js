@@ -13,7 +13,7 @@
 import type {Datatip} from 'atom-ide-ui';
 import type {IDebugService} from './types';
 
-import {bindObservableAsProps} from 'nuclide-commons-ui/bindObservableAsProps';
+import {bindObservableAsProps} from '@atom-ide-community/nuclide-commons-ui/bindObservableAsProps';
 import {getDefaultEvaluationExpression} from './evaluationExpression';
 import {DebuggerMode} from './constants';
 import DebuggerDatatipComponent from './ui/DebuggerDatatipComponent';

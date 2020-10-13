@@ -15,11 +15,11 @@ import type {ExpressionTreeComponentProps} from './ExpressionTreeComponent';
 
 import * as React from 'react';
 import classnames from 'classnames';
-import {AtomInput} from 'nuclide-commons-ui/AtomInput';
-import {bindObservableAsProps} from 'nuclide-commons-ui/bindObservableAsProps';
+import {AtomInput} from '@atom-ide-community/nuclide-commons-ui/AtomInput';
+import {bindObservableAsProps} from '@atom-ide-community/nuclide-commons-ui/bindObservableAsProps';
 import nullthrows from 'nullthrows';
 import invariant from 'assert';
-import {Icon} from 'nuclide-commons-ui/Icon';
+import {Icon} from '@atom-ide-community/nuclide-commons-ui/Icon';
 import {evaluateExpressionAsStream} from '../utils';
 import {ExpressionTreeComponent} from './ExpressionTreeComponent';
 

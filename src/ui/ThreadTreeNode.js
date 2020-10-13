@@ -13,22 +13,22 @@
 /* globals Element */
 
 import type {IThread, IStackFrame, IDebugService} from '../types';
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 
-import {LoadingSpinner} from 'nuclide-commons-ui/LoadingSpinner';
-import {scrollIntoViewIfNeeded} from 'nuclide-commons-ui/scrollIntoView';
-import {Table} from 'nuclide-commons-ui/Table';
-import {NestedTreeItem, TreeItem} from 'nuclide-commons-ui/Tree';
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import {fastDebounce} from 'nuclide-commons/observable';
+import {LoadingSpinner} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
+import {scrollIntoViewIfNeeded} from '@atom-ide-community/nuclide-commons-ui/scrollIntoView';
+import {Table} from '@atom-ide-community/nuclide-commons-ui/Table';
+import {NestedTreeItem, TreeItem} from '@atom-ide-community/nuclide-commons-ui/Tree';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import {fastDebounce} from '@atom-ide-community/nuclide-commons/observable';
 import * as React from 'react';
 import {Observable, Subject} from 'rxjs';
 import {DebuggerMode} from '../constants';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {Expect} from 'nuclide-commons/expected';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {Expect} from '@atom-ide-community/nuclide-commons/expected';
 import classnames from 'classnames';
 import ReactDOM from 'react-dom';
-import {Icon} from 'nuclide-commons-ui/Icon';
+import {Icon} from '@atom-ide-community/nuclide-commons-ui/Icon';
 
 type Props = {
   thread: IThread,

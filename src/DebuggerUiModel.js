@@ -13,12 +13,12 @@
 import type {
   DebuggerLaunchAttachProvider,
   NuclideDebuggerProvider,
-} from 'nuclide-debugger-common';
+} from '@atom-ide-community/nuclide-debugger-common';
 import type {IDebugService} from './types';
 
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import {Emitter} from 'atom';
-import nuclideUri from 'nuclide-commons/nuclideUri';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
 
 export const WORKSPACE_VIEW_URI = 'atom://nuclide/debugger';
 

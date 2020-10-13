@@ -62,26 +62,26 @@ import type {
   IProcessConfig,
   MessageProcessor,
   VSAdapterExecutableInfo,
-} from 'nuclide-debugger-common';
-import type {TimingTracker} from 'nuclide-commons/analytics';
+} from '@atom-ide-community/nuclide-debugger-common';
+import type {TimingTracker} from '@atom-ide-community/nuclide-commons/analytics';
 import * as DebugProtocol from 'vscode-debugprotocol';
 import * as React from 'react';
 
 import invariant from 'assert';
-import {Icon} from 'nuclide-commons-ui/Icon';
-import nuclideUri from 'nuclide-commons/nuclideUri';
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import {sleep, serializeAsyncCall} from 'nuclide-commons/promise';
+import {Icon} from '@atom-ide-community/nuclide-commons-ui/Icon';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import {sleep, serializeAsyncCall} from '@atom-ide-community/nuclide-commons/promise';
 import {
   VsDebugSession,
   localToRemoteProcessor,
   remoteToLocalProcessor,
   getVSCodeDebuggerAdapterServiceByNuclideUri,
-} from 'nuclide-debugger-common';
+} from '@atom-ide-community/nuclide-debugger-common';
 import {Observable, Subject, TimeoutError} from 'rxjs';
-import {TextEditorBanner} from 'nuclide-commons-ui/TextEditorBanner';
-import ReadOnlyNotice from 'nuclide-commons-ui/ReadOnlyNotice';
-import {track, startTracking} from 'nuclide-commons/analytics';
+import {TextEditorBanner} from '@atom-ide-community/nuclide-commons-ui/TextEditorBanner';
+import ReadOnlyNotice from '@atom-ide-community/nuclide-commons-ui/ReadOnlyNotice';
+import {track, startTracking} from '@atom-ide-community/nuclide-commons/analytics';
 import nullthrows from 'nullthrows';
 import {
   getConsoleRegisterExecutor,
@@ -101,9 +101,9 @@ import {
   Process,
   ExpressionContainer,
 } from './DebuggerModel';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import {Emitter, TextBuffer} from 'atom';
-import {distinct, mapFromObject} from 'nuclide-commons/collection';
+import {distinct, mapFromObject} from '@atom-ide-community/nuclide-commons/collection';
 import {onUnexpectedError} from '../utils';
 import uuid from 'uuid';
 import {

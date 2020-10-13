@@ -11,7 +11,7 @@
  */
 
 import type {IDebugService, RemoteDebuggerService} from './types';
-import type {IProcessConfig} from 'nuclide-debugger-common';
+import type {IProcessConfig} from '@atom-ide-community/nuclide-debugger-common';
 
 export default class RemoteControlService implements RemoteDebuggerService {
   _service: IDebugService;

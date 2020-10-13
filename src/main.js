@@ -15,7 +15,7 @@ import type {
   DebuggerLaunchAttachProvider,
   NuclideDebuggerProvider,
   DebuggerConfigurationProvider,
-} from 'nuclide-debugger-common';
+} from '@atom-ide-community/nuclide-debugger-common';
 import type {
   ConsoleService,
   DatatipProvider,
@@ -23,19 +23,19 @@ import type {
   RegisterExecutorFunction,
   TerminalApi,
 } from 'atom-ide-ui';
-import type {NuclideUri} from 'nuclide-commons/nuclideUri';
+import type {NuclideUri} from '@atom-ide-community/nuclide-commons/nuclideUri';
 import type {SerializedState, IBreakpoint} from './types';
 
 import idx from 'idx';
-import {observeRemovedHostnames} from 'nuclide-commons-atom/projects';
+import {observeRemovedHostnames} from '@atom-ide-community/nuclide-commons-atom/projects';
 import BreakpointManager from './BreakpointManager';
 import {AnalyticsEvents, DebuggerMode} from './constants';
 import BreakpointConfigComponent from './ui/BreakpointConfigComponent';
-import createPackage from 'nuclide-commons-atom/createPackage';
+import createPackage from '@atom-ide-community/nuclide-commons-atom/createPackage';
 import {getLineForEvent} from './utils';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import invariant from 'assert';
-import {track} from 'nuclide-commons/analytics';
+import {track} from '@atom-ide-community/nuclide-commons/analytics';
 import RemoteControlService from './RemoteControlService';
 import DebuggerUiModel from './DebuggerUiModel';
 import DebugService from './vsp/DebugService';
@@ -43,8 +43,8 @@ import {debuggerDatatip} from './DebuggerDatatip';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import DebuggerLaunchAttachUI from './ui/DebuggerLaunchAttachUI';
-import {renderReactRoot} from 'nuclide-commons-ui/renderReactRoot';
-import nuclideUri from 'nuclide-commons/nuclideUri';
+import {renderReactRoot} from '@atom-ide-community/nuclide-commons-ui/renderReactRoot';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
 import {
   setNotificationService,
   setConsoleService,
@@ -54,15 +54,15 @@ import {
   setRpcService,
   addDebugConfigurationProvider,
 } from './AtomServiceContainer';
-import {wordAtPosition, trimRange} from 'nuclide-commons-atom/range';
+import {wordAtPosition, trimRange} from '@atom-ide-community/nuclide-commons-atom/range';
 import DebuggerLayoutManager from './ui/DebuggerLayoutManager';
 import DebuggerPaneViewModel from './ui/DebuggerPaneViewModel';
 import DebuggerPaneContainerViewModel from './ui/DebuggerPaneContainerViewModel';
 import os from 'os';
 import nullthrows from 'nullthrows';
-import ReactMountRootElement from 'nuclide-commons-ui/ReactMountRootElement';
-import {sortMenuGroups} from 'nuclide-commons/menuUtils';
-import passesGK from 'nuclide-commons/passesGK';
+import ReactMountRootElement from '@atom-ide-community/nuclide-commons-ui/ReactMountRootElement';
+import {sortMenuGroups} from '@atom-ide-community/nuclide-commons/menuUtils';
+import passesGK from '@atom-ide-community/nuclide-commons/passesGK';
 
 const DATATIP_PACKAGE_NAME = 'debugger-datatip';
 

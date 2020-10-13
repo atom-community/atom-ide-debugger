@@ -17,9 +17,9 @@ import {
 import DebuggerPaneViewModel from './DebuggerPaneViewModel';
 import invariant from 'assert';
 import * as React from 'react';
-import TabBarView from 'nuclide-commons-ui/VendorLib/atom-tabs/lib/tab-bar-view';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {View} from 'nuclide-commons-ui/View';
+import TabBarView from '@atom-ide-community/nuclide-commons-ui/VendorLib/atom-tabs/lib/tab-bar-view';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {View} from '@atom-ide-community/nuclide-commons-ui/View';
 
 const DEBUGGER_TAB_TITLE = 'Debugger';
 

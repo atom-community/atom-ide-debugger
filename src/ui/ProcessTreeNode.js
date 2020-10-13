@@ -12,11 +12,11 @@
 
 import type {IProcess, IDebugService, IThread} from '../types';
 
-import {AtomInput} from 'nuclide-commons-ui/AtomInput';
-import {TreeItem, NestedTreeItem} from 'nuclide-commons-ui/Tree';
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import {fastDebounce} from 'nuclide-commons/observable';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import {AtomInput} from '@atom-ide-community/nuclide-commons-ui/AtomInput';
+import {TreeItem, NestedTreeItem} from '@atom-ide-community/nuclide-commons-ui/Tree';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import {fastDebounce} from '@atom-ide-community/nuclide-commons/observable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import * as React from 'react';
 import {Observable} from 'rxjs';
 import ThreadTreeNode from './ThreadTreeNode';
@@ -24,8 +24,8 @@ import {DebuggerMode} from '../constants';
 import {
   LoadingSpinnerSizes,
   LoadingSpinner,
-} from 'nuclide-commons-ui/LoadingSpinner';
-import {Icon} from 'nuclide-commons-ui/Icon';
+} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
+import {Icon} from '@atom-ide-community/nuclide-commons-ui/Icon';
 
 type Props = {
   process: IProcess,

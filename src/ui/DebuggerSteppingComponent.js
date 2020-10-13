@@ -14,16 +14,16 @@ import type {IDebugService, IThread, IProcess} from '../types';
 import {
   LoadingSpinner,
   LoadingSpinnerSizes,
-} from 'nuclide-commons-ui/LoadingSpinner';
+} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
 
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import {fastDebounce} from 'nuclide-commons/observable';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import {fastDebounce} from '@atom-ide-community/nuclide-commons/observable';
 import * as React from 'react';
-import {Button} from 'nuclide-commons-ui/Button';
-import {ButtonGroup} from 'nuclide-commons-ui/ButtonGroup';
+import {Button} from '@atom-ide-community/nuclide-commons-ui/Button';
+import {ButtonGroup} from '@atom-ide-community/nuclide-commons-ui/ButtonGroup';
 import {Observable} from 'rxjs';
 import {DebuggerMode} from '../constants';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import logger from '../logger';
 import nullthrows from 'nullthrows';
 import invariant from 'assert';

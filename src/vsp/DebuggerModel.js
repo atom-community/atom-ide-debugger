@@ -65,19 +65,19 @@ import type {
   SourcePresentationHint,
   DebuggerModeType,
 } from '../types';
-import type {IProcessConfig} from 'nuclide-debugger-common';
-import nuclideUri from 'nuclide-commons/nuclideUri';
-import {getVSCodeDebuggerAdapterServiceByNuclideUri} from 'nuclide-debugger-common';
+import type {IProcessConfig} from '@atom-ide-community/nuclide-debugger-common';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
+import {getVSCodeDebuggerAdapterServiceByNuclideUri} from '@atom-ide-community/nuclide-debugger-common';
 import * as DebugProtocol from 'vscode-debugprotocol';
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 
 import {Observable} from 'rxjs';
 import uuid from 'uuid';
 import nullthrows from 'nullthrows';
 import invariant from 'assert';
 import {Emitter, Range} from 'atom';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {track} from 'nuclide-commons/analytics';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {track} from '@atom-ide-community/nuclide-commons/analytics';
 import {
   AnalyticsEvents,
   UNKNOWN_SOURCE,
@@ -85,8 +85,8 @@ import {
   DebuggerMode,
 } from '../constants';
 import {openSourceLocation} from '../utils';
-import {distinct} from 'nuclide-commons/collection';
-import {Expect} from 'nuclide-commons/expected';
+import {distinct} from '@atom-ide-community/nuclide-commons/collection';
+import {Expect} from '@atom-ide-community/nuclide-commons/expected';
 
 export class Source implements ISource {
   +uri: string;

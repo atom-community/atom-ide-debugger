@@ -17,12 +17,12 @@ import type {
   IStackFrame,
   ContextType,
 } from './types';
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 
 import nullthrows from 'nullthrows';
 import {Observable} from 'rxjs';
 import logger from './logger';
-import {Expect} from 'nuclide-commons/expected';
+import {Expect} from '@atom-ide-community/nuclide-commons/expected';
 
 function getGutterLineNumber(target: HTMLElement): ?number {
   const eventLine = parseInt(target.dataset.line, 10);

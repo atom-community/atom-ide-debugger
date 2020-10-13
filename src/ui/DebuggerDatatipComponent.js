@@ -10,10 +10,10 @@
  * @format
  */
 
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 import type {IExpression} from '../types';
 
-import {LoadingSpinner} from 'nuclide-commons-ui/LoadingSpinner';
+import {LoadingSpinner} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
 import * as React from 'react';
 import {ExpressionTreeComponent} from './ExpressionTreeComponent';
 

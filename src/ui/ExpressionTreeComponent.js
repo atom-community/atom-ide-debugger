@@ -11,24 +11,24 @@
  */
 
 import type {IExpression, IVariable} from 'atom-ide-ui';
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 
-import {AtomInput} from 'nuclide-commons-ui/AtomInput';
-import {Icon} from 'nuclide-commons-ui/Icon';
-import {track} from 'nuclide-commons/analytics';
+import {AtomInput} from '@atom-ide-community/nuclide-commons-ui/AtomInput';
+import {Icon} from '@atom-ide-community/nuclide-commons-ui/Icon';
+import {track} from '@atom-ide-community/nuclide-commons/analytics';
 import * as React from 'react';
 import classnames from 'classnames';
-import {Expect} from 'nuclide-commons/expected';
-import ignoreTextSelectionEvents from 'nuclide-commons-ui/ignoreTextSelectionEvents';
+import {Expect} from '@atom-ide-community/nuclide-commons/expected';
+import ignoreTextSelectionEvents from '@atom-ide-community/nuclide-commons-ui/ignoreTextSelectionEvents';
 import invariant from 'assert';
 import nullthrows from 'nullthrows';
-import {LoadingSpinner} from 'nuclide-commons-ui/LoadingSpinner';
+import {LoadingSpinner} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
 import {Observable} from 'rxjs';
-import SimpleValueComponent from 'nuclide-commons-ui/SimpleValueComponent';
-import {STRING_REGEX} from 'nuclide-commons-ui/SimpleValueComponent';
-import {TreeList, TreeItem, NestedTreeItem} from 'nuclide-commons-ui/Tree';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {ValueComponentClassNames} from 'nuclide-commons-ui/ValueComponentClassNames';
+import SimpleValueComponent from '@atom-ide-community/nuclide-commons-ui/SimpleValueComponent';
+import {STRING_REGEX} from '@atom-ide-community/nuclide-commons-ui/SimpleValueComponent';
+import {TreeList, TreeItem, NestedTreeItem} from '@atom-ide-community/nuclide-commons-ui/Tree';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {ValueComponentClassNames} from '@atom-ide-community/nuclide-commons-ui/ValueComponentClassNames';
 
 const EDIT_VALUE_FROM_ICON = 'edit-value-from-icon';
 const NOT_AVAILABLE_MESSAGE = '<not available>';

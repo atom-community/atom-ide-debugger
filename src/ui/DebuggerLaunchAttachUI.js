@@ -14,16 +14,16 @@
 import type {
   DebuggerConfigAction,
   DebuggerLaunchAttachProvider,
-} from 'nuclide-debugger-common';
-import type {Tab} from 'nuclide-commons-ui/Tabs';
+} from '@atom-ide-community/nuclide-debugger-common';
+import type {Tab} from '@atom-ide-community/nuclide-commons-ui/Tabs';
 
 import * as React from 'react';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import nuclideUri from 'nuclide-commons/nuclideUri';
-import {Button, ButtonTypes} from 'nuclide-commons-ui/Button';
-import {ButtonGroup} from 'nuclide-commons-ui/ButtonGroup';
-import {Dropdown} from 'nuclide-commons-ui/Dropdown';
-import Tabs from 'nuclide-commons-ui/Tabs';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
+import {Button, ButtonTypes} from '@atom-ide-community/nuclide-commons-ui/Button';
+import {ButtonGroup} from '@atom-ide-community/nuclide-commons-ui/ButtonGroup';
+import {Dropdown} from '@atom-ide-community/nuclide-commons-ui/Dropdown';
+import Tabs from '@atom-ide-community/nuclide-commons-ui/Tabs';
 import {Observable} from 'rxjs';
 import invariant from 'assert';
 import {isNuclideEnvironment} from '../AtomServiceContainer';

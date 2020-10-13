@@ -13,7 +13,7 @@
 import type {IStackFrame, IDebugService} from '../types';
 
 import * as React from 'react';
-import {TreeItem} from 'nuclide-commons-ui/Tree';
+import {TreeItem} from '@atom-ide-community/nuclide-commons-ui/Tree';
 import classnames from 'classnames';
 
 type Props = {

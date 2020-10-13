@@ -10,18 +10,18 @@
  * @format
  */
 
-import {AtomInput} from 'nuclide-commons-ui/AtomInput';
+import {AtomInput} from '@atom-ide-community/nuclide-commons-ui/AtomInput';
 import type {IDebugService, IProcess} from '../types';
 
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
 import * as React from 'react';
-import {TreeList} from 'nuclide-commons-ui/Tree';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {fastDebounce} from 'nuclide-commons/observable';
+import {TreeList} from '@atom-ide-community/nuclide-commons-ui/Tree';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {fastDebounce} from '@atom-ide-community/nuclide-commons/observable';
 import ProcessTreeNode from './ProcessTreeNode';
-import {Button, ButtonSizes} from 'nuclide-commons-ui/Button';
-import {ButtonGroup} from 'nuclide-commons-ui/ButtonGroup';
-import featureConfig from 'nuclide-commons-atom/feature-config';
+import {Button, ButtonSizes} from '@atom-ide-community/nuclide-commons-ui/Button';
+import {ButtonGroup} from '@atom-ide-community/nuclide-commons-ui/ButtonGroup';
+import featureConfig from '@atom-ide-community/nuclide-commons-atom/feature-config';
 import {AddTargetButton} from './DebuggerAddTargetButton';
 
 type Props = {

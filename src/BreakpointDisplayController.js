@@ -13,15 +13,15 @@
 import type {IBreakpoint, IDebugService, IUIBreakpoint} from './types';
 
 import invariant from 'assert';
-import {bufferPositionForMouseEvent} from 'nuclide-commons-atom/mouse-to-position';
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import {fastDebounce} from 'nuclide-commons/observable';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {showMenuForEvent} from 'nuclide-commons-atom/ContextMenu';
+import {bufferPositionForMouseEvent} from '@atom-ide-community/nuclide-commons-atom/mouse-to-position';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import {fastDebounce} from '@atom-ide-community/nuclide-commons/observable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {showMenuForEvent} from '@atom-ide-community/nuclide-commons-atom/ContextMenu';
 import classnames from 'classnames';
 import {Observable} from 'rxjs';
 import {DebuggerMode} from './constants';
-import featureConfig from 'nuclide-commons-atom/feature-config';
+import featureConfig from '@atom-ide-community/nuclide-commons-atom/feature-config';
 
 /**
  * A single delegate which handles events from the object.

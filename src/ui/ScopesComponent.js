@@ -11,16 +11,16 @@
  */
 
 import type {IDebugService, IScope, IVariable} from '../types';
-import type {Expected} from 'nuclide-commons/expected';
+import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
 
-import {bindObservableAsProps} from 'nuclide-commons-ui/bindObservableAsProps';
+import {bindObservableAsProps} from '@atom-ide-community/nuclide-commons-ui/bindObservableAsProps';
 import * as React from 'react';
 import {Observable} from 'rxjs';
-import {Section} from 'nuclide-commons-ui/Section';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
-import {Expect} from 'nuclide-commons/expected';
-import {LoadingSpinner} from 'nuclide-commons-ui/LoadingSpinner';
+import {Section} from '@atom-ide-community/nuclide-commons-ui/Section';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
+import {Expect} from '@atom-ide-community/nuclide-commons/expected';
+import {LoadingSpinner} from '@atom-ide-community/nuclide-commons-ui/LoadingSpinner';
 import {ExpressionTreeComponent} from './ExpressionTreeComponent';
 
 type Props = {|

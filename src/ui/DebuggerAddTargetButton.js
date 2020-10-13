@@ -11,9 +11,9 @@
  */
 
 import * as React from 'react';
-import {ButtonGroup} from 'nuclide-commons-ui/ButtonGroup';
-import {Dropdown} from 'nuclide-commons-ui/Dropdown';
-import {goToLocation} from 'nuclide-commons-atom/go-to-location';
+import {ButtonGroup} from '@atom-ide-community/nuclide-commons-ui/ButtonGroup';
+import {Dropdown} from '@atom-ide-community/nuclide-commons-ui/Dropdown';
+import {goToLocation} from '@atom-ide-community/nuclide-commons-atom/go-to-location';
 
 const DEVICE_PANEL_URL = 'atom://nuclide/devices';
 

@@ -13,12 +13,12 @@
 import type {IDebugService} from '../types';
 
 import classnames from 'classnames';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import * as React from 'react';
-import {bindObservableAsProps} from 'nuclide-commons-ui/bindObservableAsProps';
+import {bindObservableAsProps} from '@atom-ide-community/nuclide-commons-ui/bindObservableAsProps';
 import {Observable} from 'rxjs';
 import WatchExpressionComponent from './WatchExpressionComponent';
-import {observableFromSubscribeFunction} from 'nuclide-commons/event';
+import {observableFromSubscribeFunction} from '@atom-ide-community/nuclide-commons/event';
 
 type Props = {
   service: IDebugService,

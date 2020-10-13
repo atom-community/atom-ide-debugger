@@ -12,16 +12,16 @@
 
 import type {IBreakpoint, IUIBreakpoint, IDebugService} from '../types';
 
-import {AtomInput} from 'nuclide-commons-ui/AtomInput';
+import {AtomInput} from '@atom-ide-community/nuclide-commons-ui/AtomInput';
 import * as React from 'react';
-import {Button, ButtonTypes} from 'nuclide-commons-ui/Button';
-import {ButtonGroup} from 'nuclide-commons-ui/ButtonGroup';
-import nuclideUri from 'nuclide-commons/nuclideUri';
-import UniversalDisposable from 'nuclide-commons/UniversalDisposable';
-import {Checkbox} from 'nuclide-commons-ui/Checkbox';
-import {Modal} from 'nuclide-commons-ui/Modal';
+import {Button, ButtonTypes} from '@atom-ide-community/nuclide-commons-ui/Button';
+import {ButtonGroup} from '@atom-ide-community/nuclide-commons-ui/ButtonGroup';
+import nuclideUri from '@atom-ide-community/nuclide-commons/nuclideUri';
+import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import {Checkbox} from '@atom-ide-community/nuclide-commons-ui/Checkbox';
+import {Modal} from '@atom-ide-community/nuclide-commons-ui/Modal';
 import {Observable} from 'rxjs';
-import {track} from 'nuclide-commons/analytics';
+import {track} from '@atom-ide-community/nuclide-commons/analytics';
 import {AnalyticsEvents} from '../constants';
 
 type PropsType = {
