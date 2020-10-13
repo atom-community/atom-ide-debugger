@@ -14,10 +14,11 @@
     "clean": "shx rm -rf dist",
     "babel": "npm run clean && shx cp -r src dist && cross-env NODE_ENV=development cross-env BABEL_KEEP_MODULES=false babel dist --out-dir dist",
     "dev": "npm run clean && cross-env NODE_ENV=development cross-env BABEL_KEEP_MODULES=true rollup -c -w",
-    "build": "npm run clean && cross-env NODE_ENV=production cross-env BABEL_KEEP_MODULES=true rollup -c ",
+    "bundle": "npm run clean && cross-env NODE_ENV=production cross-env BABEL_KEEP_MODULES=true rollup -c ",
+    "build": "npm run babel",
     "build-commit": "build-commit -o dist",
     "bump": "ncu -u",
-    "prepare": "npm run babel"
+    "prepare": "npm run build"
   },
   "atomTestRunner": "./spec/runner",
   "activationHooks": [
