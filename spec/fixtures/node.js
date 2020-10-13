@@ -1,12 +1,12 @@
 
 
-a = 1
+let a = 1
 
 
-b = 2
+let b = 2
 
 function myfun() {
-    x = 1
+    let x = 1
     return x
 }
 
