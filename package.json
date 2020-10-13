@@ -64,7 +64,7 @@
     "build-commit": "0.1.1"
   },
   "package-deps": [],
-  "atomConfig": {
+  "configSchema": {
     "showDebuggerOnBpSet": {
       "title": "Show debugger on breakpoint set",
       "type": "boolean",
