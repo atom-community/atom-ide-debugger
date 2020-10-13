@@ -5,9 +5,9 @@ import { LoadingSpinner } from "@atom-ide-community/nuclide-commons-ui/LoadingSp
 import * as React from "react"
 import { ExpressionTreeComponent } from "./ExpressionTreeComponent"
 
-type Props = {|
+type Props = {
   +expression: Expected<IExpression>,
-|}
+}
 
 export default class DebuggerDatatipComponent extends React.Component<Props> {
   render(): React.Node {

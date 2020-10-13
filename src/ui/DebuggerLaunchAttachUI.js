@@ -19,12 +19,12 @@ type ConnectionOption = {
   label: string,
 }
 
-type EnabledProvider = {|
+type EnabledProvider = {
   provider: DebuggerLaunchAttachProvider,
   tabName: string,
-|}
+}
 
-type Props = {|
+type Props = {
   +dialogMode: DebuggerConfigAction,
   +initialSelectedTabName: ?string,
   +initialProviderConfig: ?{ [string]: mixed },
@@ -34,7 +34,7 @@ type Props = {|
   +connectionOptions: Array<ConnectionOption>,
   +providers: Map<string, Array<DebuggerLaunchAttachProvider>>,
   +dialogCloser: () => void,
-|}
+}
 
 type State = {
   selectedProviderTab: ?string,

@@ -31,22 +31,22 @@ const SPINNER_DELAY = 200 /* ms */
 // for the entire tree.
 const ExpansionStates: WeakMap<Object, Map<string, boolean>> = new WeakMap()
 
-type ExpressionTreeNodeProps = {|
+type ExpressionTreeNodeProps = {
   expression: IExpression,
   pending?: boolean,
   expansionCache: Map<string, boolean>,
   nodePath: string,
   hideExpressionName?: boolean,
   readOnly?: boolean,
-|}
+}
 
-type ExpressionTreeNodeState = {|
+type ExpressionTreeNodeState = {
   expanded: boolean,
   children: Expected<IExpression[]>,
   isEditing: boolean,
   pendingValue: ?string,
   pendingSave: boolean,
-|}
+}
 
 export class ExpressionTreeNode extends React.Component<ExpressionTreeNodeProps, ExpressionTreeNodeState> {
   state: ExpressionTreeNodeState
@@ -379,14 +379,14 @@ export class ExpressionTreeNode extends React.Component<ExpressionTreeNodeProps,
   }
 }
 
-export type ExpressionTreeComponentProps = {|
+export type ExpressionTreeComponentProps = {
   expression: IExpression,
   containerContext: Object,
   pending?: boolean,
   className?: string,
   hideExpressionName?: boolean,
   readOnly?: boolean,
-|}
+}
 
 export class ExpressionTreeComponent extends React.Component<ExpressionTreeComponentProps> {
   constructor(props: ExpressionTreeComponentProps) {

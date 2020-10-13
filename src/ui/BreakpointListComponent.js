@@ -18,9 +18,9 @@ import featureConfig from "@atom-ide-community/nuclide-commons-atom/feature-conf
 import { observeProjectPathsAll } from "@atom-ide-community/nuclide-commons-atom/projects"
 import passesGK from "@atom-ide-community/nuclide-commons/passesGK"
 
-type Props = {|
+type Props = {
   service: IDebugService,
-|}
+}
 
 type State = {
   supportsConditionalBreakpoints: boolean,

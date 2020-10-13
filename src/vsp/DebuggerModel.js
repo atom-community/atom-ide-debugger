@@ -595,10 +595,10 @@ export class StackFrame implements IStackFrame {
   }
 }
 
-type CallStack = {|
+type CallStack = {
   valid: boolean,
   callFrames: IStackFrame[],
-|}
+}
 
 export class Thread implements IThread {
   _callStack: CallStack

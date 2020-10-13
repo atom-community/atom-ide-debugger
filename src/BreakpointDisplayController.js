@@ -22,11 +22,11 @@ type BreakpointDisplayControllerDelegate = {
   +handleTextEditorDestroyed: (controller: BreakpointDisplayController) => void,
 }
 
-type BreakpointMarkerProperties = {|
+type BreakpointMarkerProperties = {
   enabled: boolean,
   resolved: boolean,
   conditional: boolean,
-|}
+}
 
 /**
  * Handles displaying breakpoints and processing events for a single text

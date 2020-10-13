@@ -11,9 +11,9 @@ import { Expect } from "@atom-ide-community/nuclide-commons/expected"
 import { LoadingSpinner } from "@atom-ide-community/nuclide-commons-ui/LoadingSpinner"
 import { ExpressionTreeComponent } from "./ExpressionTreeComponent"
 
-type Props = {|
+type Props = {
   +service: IDebugService,
-|}
+}
 
 const NO_VARIABLES = (
   <div className="debugger-expression-value-row">
@@ -29,10 +29,10 @@ const LOADING = (
   </div>
 )
 
-type State = {|
+type State = {
   scopes: Expected<Array<IScope>>,
   expandedScopes: Set<string>,
-|}
+}
 
 export default class ScopesComponent extends React.Component<Props, State> {
   _disposables: UniversalDisposable
