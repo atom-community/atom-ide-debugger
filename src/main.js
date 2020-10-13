@@ -31,7 +31,6 @@ import {observeRemovedHostnames} from '@atom-ide-community/nuclide-commons-atom/
 import BreakpointManager from './BreakpointManager';
 import {AnalyticsEvents, DebuggerMode} from './constants';
 import BreakpointConfigComponent from './ui/BreakpointConfigComponent';
-import createPackage from '@atom-ide-community/nuclide-commons-atom/createPackage';
 import {getLineForEvent} from './utils';
 import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import invariant from 'assert';
@@ -72,31 +71,30 @@ type LaunchAttachDialogArgs = {
   config?: {[string]: mixed},
 };
 
-class Activation {
-  _disposables: UniversalDisposable;
-  _uiModel: DebuggerUiModel;
-  _breakpointManager: BreakpointManager;
-  _service: DebugService;
-  _layoutManager: DebuggerLayoutManager;
-  _selectedDebugConnection: ?string;
-  _visibleLaunchAttachDialogMode: ?DebuggerConfigAction;
-  _lauchAttachDialogCloser: ?() => void;
-  _connectionProviders: Map<string, Array<DebuggerLaunchAttachProvider>>;
+let _disposables: UniversalDisposable;
+let _uiModel: DebuggerUiModel;
+let _breakpointManager: BreakpointManager;
+let _service: DebugService;
+let _layoutManager: DebuggerLayoutManager;
+let _selectedDebugConnection: ?string;
+let _visibleLaunchAttachDialogMode: ?DebuggerConfigAction;
+let _lauchAttachDialogCloser: ?() => void;
+let _connectionProviders: Map<string, Array<DebuggerLaunchAttachProvider>>;
 
-  constructor(state: ?SerializedState) {
+export function activate(state: ?SerializedState) {
     atom.views.addViewProvider(DebuggerPaneViewModel, createDebuggerView);
     atom.views.addViewProvider(
       DebuggerPaneContainerViewModel,
       createDebuggerView,
     );
-    this._service = new DebugService(state);
-    this._uiModel = new DebuggerUiModel(this._service);
-    this._breakpointManager = new BreakpointManager(this._service);
-    this._selectedDebugConnection = null;
-    this._visibleLaunchAttachDialogMode = null;
-    this._lauchAttachDialogCloser = null;
-    this._connectionProviders = new Map();
-    this._layoutManager = new DebuggerLayoutManager(this._service, state);
+    _service = new DebugService(state);
+    _uiModel = new DebuggerUiModel(_service);
+    _breakpointManager = new BreakpointManager(_service);
+    _selectedDebugConnection = null;
+    _visibleLaunchAttachDialogMode = null;
+    _lauchAttachDialogCloser = null;
+    _connectionProviders = new Map();
+    _layoutManager = new DebuggerLayoutManager(_service, state);
 
     // Manually manipulate the `Debugger` top level menu order.
     const insertIndex = atom.menu.template.findIndex(
@@ -115,13 +113,13 @@ class Activation {
 
     const removedHostnames = observeRemovedHostnames();
 
-    this._disposables = new UniversalDisposable(
-      this._layoutManager,
-      this._service,
-      this._uiModel,
-      this._breakpointManager,
+    _disposables = new UniversalDisposable(
+      _layoutManager,
+      _service,
+      _uiModel,
+      _breakpointManager,
       removedHostnames.subscribe(hostname => {
-        this._service
+        _service
           .getModel()
           .getProcesses()
           .forEach(debuggerProcess => {
@@ -130,13 +128,13 @@ class Activation {
               return; // Nothing to do if our debug session is local.
             }
             if (nuclideUri.getHostname(debuggeeTargetUri) === hostname) {
-              this._service.stopProcess(debuggerProcess);
+              _service.stopProcess(debuggerProcess);
             }
           });
       }),
-      this._uiModel.onConnectionsUpdated(() => {
-        const newConnections = this._uiModel.getConnections();
-        const keys = Array.from(this._connectionProviders.keys());
+      _uiModel.onConnectionsUpdated(() => {
+        const newConnections = _uiModel.getConnections();
+        const keys = Array.from(_connectionProviders.keys());
 
         const removedConnections = keys.filter(
           connection =>
@@ -147,17 +145,17 @@ class Activation {
         );
 
         for (const key of removedConnections) {
-          this._connectionProviders.delete(key);
+          _connectionProviders.delete(key);
         }
 
         for (const connection of addedConnections) {
-          this._setProvidersForConnection(connection);
+          _setProvidersForConnection(connection);
         }
       }),
-      this._uiModel.onProvidersUpdated(() => {
-        const connections = this._uiModel.getConnections();
+      _uiModel.onProvidersUpdated(() => {
+        const connections = _uiModel.getConnections();
         for (const connection of connections) {
-          this._setProvidersForConnection(connection);
+          _setProvidersForConnection(connection);
         }
       }),
       // Commands.
@@ -168,7 +166,7 @@ class Activation {
             _ => _.detail.selectedTabName,
           );
           const config: any = idx(event, _ => _.detail.config);
-          this._showLaunchAttachDialog({
+          _showLaunchAttachDialog({
             dialogMode: 'attach',
             selectedTabName,
             config,
@@ -179,7 +177,7 @@ class Activation {
         'debugger:show-launch-dialog': event => {
           const selectedTabName: any = event?.detail?.selectedTabName;
           const config: any = event?.detail?.config;
-          this._showLaunchAttachDialog({
+          _showLaunchAttachDialog({
             dialogMode: 'launch',
             selectedTabName,
             config,
@@ -187,74 +185,74 @@ class Activation {
         },
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:continue-debugging': this._continue.bind(this),
+        'debugger:continue-debugging': _continue.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:stop-debugging': this._stop.bind(this),
+        'debugger:stop-debugging': _stop.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:restart-debugging': this._restart.bind(this),
+        'debugger:restart-debugging': _restart.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:step-over': this._stepOver.bind(this),
+        'debugger:step-over': _stepOver.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:step-into': this._stepInto.bind(this),
+        'debugger:step-into': _stepInto.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:step-out': this._stepOut.bind(this),
+        'debugger:step-out': _stepOut.bind(this),
       }),
       atom.commands.add('atom-workspace', {
         // eslint-disable-next-line nuclide-internal/atom-apis
-        'debugger:add-breakpoint': this._addBreakpoint.bind(this),
+        'debugger:add-breakpoint': _addBreakpoint.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:toggle-breakpoint': this._toggleBreakpoint.bind(this),
+        'debugger:toggle-breakpoint': _toggleBreakpoint.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:toggle-breakpoint-enabled': this._toggleBreakpointEnabled.bind(
+        'debugger:toggle-breakpoint-enabled': _toggleBreakpointEnabled.bind(
           this,
         ),
       }),
       atom.commands.add('atom-workspace', {
         // eslint-disable-next-line nuclide-internal/atom-apis
-        'debugger:edit-breakpoint': this._configureBreakpoint.bind(this),
+        'debugger:edit-breakpoint': _configureBreakpoint.bind(this),
       }),
       atom.commands.add('.debugger-thread-list-item', {
-        'debugger:terminate-thread': this._terminateThread.bind(this),
+        'debugger:terminate-thread': _terminateThread.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:remove-all-breakpoints': this._deleteAllBreakpoints.bind(
+        'debugger:remove-all-breakpoints': _deleteAllBreakpoints.bind(
           this,
         ),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:enable-all-breakpoints': this._enableAllBreakpoints.bind(
+        'debugger:enable-all-breakpoints': _enableAllBreakpoints.bind(
           this,
         ),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:disable-all-breakpoints': this._disableAllBreakpoints.bind(
+        'debugger:disable-all-breakpoints': _disableAllBreakpoints.bind(
           this,
         ),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:remove-breakpoint': this._deleteBreakpoint.bind(this),
+        'debugger:remove-breakpoint': _deleteBreakpoint.bind(this),
       }),
       atom.commands.add('atom-workspace', {
         // eslint-disable-next-line nuclide-internal/atom-apis
-        'debugger:add-to-watch': this._addToWatch.bind(this),
+        'debugger:add-to-watch': _addToWatch.bind(this),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:run-to-location': this._runToLocation.bind(this),
+        'debugger:run-to-location': _runToLocation.bind(this),
       }),
       atom.commands.add('.debugger-expression-value-list', {
-        'debugger:copy-debugger-expression-value': this._copyDebuggerExpressionValue.bind(
+        'debugger:copy-debugger-expression-value': _copyDebuggerExpressionValue.bind(
           this,
         ),
       }),
       atom.commands.add('atom-workspace', {
-        'debugger:copy-debugger-callstack': this._copyDebuggerCallstack.bind(
+        'debugger:copy-debugger-callstack': _copyDebuggerCallstack.bind(
           this,
         ),
       }),
@@ -280,8 +278,8 @@ class Activation {
             label: 'Edit breakpoint...',
             command: 'debugger:edit-breakpoint',
             shouldDisplay: event => {
-              const bp = this._getBreakpointFromEvent(event);
-              return bp != null && this._supportsConditionalBreakpoints();
+              const bp = _getBreakpointFromEvent(event);
+              return bp != null && _supportsConditionalBreakpoints();
             },
           },
           {
@@ -300,8 +298,8 @@ class Activation {
                 const threadId = parseInt(target.dataset.threadid, 10);
                 if (!Number.isNaN(threadId)) {
                   return (
-                    this._supportsTerminateThreadsRequest() &&
-                    !this._isReadOnlyTarget()
+                    _supportsTerminateThreadsRequest() &&
+                    !_isReadOnlyTarget()
                   );
                 }
               }
@@ -334,10 +332,10 @@ class Activation {
                 label: 'Toggle Breakpoint enabled/disabled',
                 command: 'debugger:toggle-breakpoint-enabled',
                 shouldDisplay: event =>
-                  this._executeWithEditorPath(
+                  _executeWithEditorPath(
                     event,
                     (filePath, line) =>
-                      this._service
+                      _service
                         .getModel()
                         .getBreakpointAtLine(filePath, line) != null,
                   ) || false,
@@ -346,11 +344,11 @@ class Activation {
                 label: 'Edit Breakpoint...',
                 command: 'debugger:edit-breakpoint',
                 shouldDisplay: event =>
-                  this._executeWithEditorPath(event, (filePath, line) => {
-                    const bp = this._service
+                  _executeWithEditorPath(event, (filePath, line) => {
+                    const bp = _service
                       .getModel()
                       .getBreakpointAtLine(filePath, line);
-                    return bp != null && this._supportsConditionalBreakpoints();
+                    return bp != null && _supportsConditionalBreakpoints();
                   }) || false,
               },
               {
@@ -359,7 +357,7 @@ class Activation {
                 shouldDisplay: event => {
                   const textEditor = atom.workspace.getActiveTextEditor();
                   if (
-                    this._service.getDebuggerMode() === DebuggerMode.STOPPED ||
+                    _service.getDebuggerMode() === DebuggerMode.STOPPED ||
                     textEditor == null
                   ) {
                     return false;
@@ -374,23 +372,23 @@ class Activation {
                 label: 'Run to Location',
                 command: 'debugger:run-to-location',
                 shouldDisplay: event =>
-                  this._service.getDebuggerMode() === DebuggerMode.PAUSED &&
-                  !this._isReadOnlyTarget(),
+                  _service.getDebuggerMode() === DebuggerMode.PAUSED &&
+                  !_isReadOnlyTarget(),
               },
             ],
           },
           {type: 'separator'},
         ],
       }),
-      this._registerCommandsContextMenuAndOpener(),
+      _registerCommandsContextMenuAndOpener(),
     );
 
     sortMenuGroups(['Debugger']);
-  }
+}
 
-  _supportsConditionalBreakpoints(): boolean {
-    // If currently debugging, return whether or not the current debugger supports this.
-    const {focusedProcess} = this._service.viewModel;
+function _supportsConditionalBreakpoints(): boolean {
+    // If currently debugging, return whether or not the current debugger supports
+    const {focusedProcess} = _service.viewModel;
     if (focusedProcess == null) {
       // If not currently debugging, return if any of the debuggers that support
       // the file extension this bp is in support conditions.
@@ -401,11 +399,11 @@ class Activation {
         focusedProcess.session.capabilities.supportsConditionalBreakpoints,
       );
     }
-  }
+}
 
-  _supportsTerminateThreadsRequest(): boolean {
-    // If currently debugging, return whether or not the current debugger supports this.
-    const {focusedProcess} = this._service.viewModel;
+function _supportsTerminateThreadsRequest(): boolean {
+    // If currently debugging, return whether or not the current debugger supports
+    const {focusedProcess} = _service.viewModel;
     if (focusedProcess == null) {
       return false;
     } else {
@@ -413,19 +411,19 @@ class Activation {
         focusedProcess.session.capabilities.supportsTerminateThreadsRequest,
       );
     }
-  }
+}
 
-  _setProvidersForConnection(connection: NuclideUri): void {
+function _setProvidersForConnection(connection: NuclideUri): void {
     const key = nuclideUri.isRemote(connection)
       ? nuclideUri.getHostname(connection)
       : 'local';
-    const availableProviders = this._uiModel.getLaunchAttachProvidersForConnection(
+    const availableProviders = _uiModel.getLaunchAttachProvidersForConnection(
       connection,
     );
-    this._connectionProviders.set(key, availableProviders);
-  }
+    _connectionProviders.set(key, availableProviders);
+}
 
-  async _getSuggestions(
+async function _getSuggestions(
     request: atom$AutocompleteRequest,
   ): Promise<?Array<atom$AutocompleteSuggestion>> {
     let text = request.editor.getText();
@@ -433,7 +431,7 @@ class Activation {
     const {row} = request.bufferPosition;
     // Only keep the lines up to and including the buffer position row.
     text = lines.slice(0, row + 1).join('\n');
-    const {focusedStackFrame, focusedProcess} = this._service.viewModel;
+    const {focusedStackFrame, focusedProcess} = _service.viewModel;
     if (
       focusedProcess == null ||
       focusedStackFrame == null ||
@@ -453,32 +451,32 @@ class Activation {
         type: item.type,
       }));
     }
-  }
+}
 
-  serialize(): SerializedState {
-    const model = this._service.getModel();
+export function serialize(): SerializedState {
+    const model = _service.getModel();
     const state = {
       sourceBreakpoints: model.getBreakpoints(),
       functionBreakpoints: model.getFunctionBreakpoints(),
       exceptionBreakpoints: model.getExceptionBreakpoints(),
       watchExpressions: model.getWatchExpressions().map(e => e.name),
-      showDebugger: this._layoutManager.isDebuggerVisible(),
-      workspaceDocksVisibility: this._layoutManager.getWorkspaceDocksVisibility(),
+      showDebugger: _layoutManager.isDebuggerVisible(),
+      workspaceDocksVisibility: _layoutManager.getWorkspaceDocksVisibility(),
     };
     return state;
-  }
+}
 
-  dispose() {
-    this._disposables.dispose();
-  }
+export function deactivate() {
+    _disposables.dispose();
+}
 
-  _registerCommandsContextMenuAndOpener(): UniversalDisposable {
+function _registerCommandsContextMenuAndOpener(): UniversalDisposable {
     const disposable = new UniversalDisposable(
       atom.workspace.addOpener(uri => {
-        return this._layoutManager.getModelForDebuggerUri(uri);
+        return _layoutManager.getModelForDebuggerUri(uri);
       }),
       () => {
-        this._layoutManager.hideDebuggerViews(false);
+        _layoutManager.hideDebuggerViews(false);
       },
       atom.commands.add('atom-workspace', {
         'debugger:show': event => {
@@ -486,22 +484,22 @@ class Activation {
           const show =
             detail == null ||
             Boolean(detail.showOnlyIfHidden) === false ||
-            !this._layoutManager.isDebuggerVisible();
+            !_layoutManager.isDebuggerVisible();
           if (show) {
-            this._layoutManager.showDebuggerViews();
+            _layoutManager.showDebuggerViews();
           }
         },
       }),
       atom.commands.add('atom-workspace', {
         'debugger:hide': () => {
-          this._layoutManager.hideDebuggerViews(false);
-          for (const process of this._service.getModel().getProcesses()) {
-            this._service.stopProcess(process);
+          _layoutManager.hideDebuggerViews(false);
+          for (const process of _service.getModel().getProcesses()) {
+            _service.stopProcess(process);
           }
         },
       }),
       atom.commands.add('atom-workspace', 'debugger:toggle', () => {
-        if (this._layoutManager.isDebuggerVisible() === true) {
+        if (_layoutManager.isDebuggerVisible() === true) {
           atom.commands.dispatch(
             atom.views.getView(atom.workspace),
             'debugger:hide',
@@ -513,15 +511,15 @@ class Activation {
           );
         }
       }),
-      this._service.onDidChangeProcessMode(() =>
-        this._layoutManager.debuggerModeChanged(),
+      _service.onDidChangeProcessMode(() =>
+        _layoutManager.debuggerModeChanged(),
       ),
-      this._service.viewModel.onDidChangeDebuggerFocus(() =>
-        this._layoutManager.debuggerModeChanged(),
+      _service.viewModel.onDidChangeDebuggerFocus(() =>
+        _layoutManager.debuggerModeChanged(),
       ),
       atom.commands.add('atom-workspace', {
         'debugger:reset-layout': () => {
-          this._layoutManager.resetLayout();
+          _layoutManager.resetLayout();
         },
       }),
       atom.contextMenu.add({
@@ -539,128 +537,128 @@ class Activation {
       }),
     );
     return disposable;
-  }
+}
 
-  _isReadOnlyTarget(): boolean {
-    const {focusedProcess} = this._service.viewModel;
+function _isReadOnlyTarget(): boolean {
+    const {focusedProcess} = _service.viewModel;
     return (
       focusedProcess != null && Boolean(focusedProcess.configuration.isReadOnly)
     );
-  }
+}
 
-  _continue() {
-    if (this._isReadOnlyTarget()) {
+function _continue() {
+    if (_isReadOnlyTarget()) {
       return;
     }
-    const {focusedThread} = this._service.viewModel;
+    const {focusedThread} = _service.viewModel;
     if (focusedThread != null) {
       track(AnalyticsEvents.DEBUGGER_STEP_CONTINUE);
       focusedThread.continue();
     }
-  }
+}
 
-  _stop() {
-    const {focusedProcess} = this._service.viewModel;
+function _stop() {
+    const {focusedProcess} = _service.viewModel;
     if (focusedProcess) {
-      this._service.stopProcess(focusedProcess);
+      _service.stopProcess(focusedProcess);
     }
-  }
+}
 
-  _restart() {
-    if (this._isReadOnlyTarget()) {
+function _restart() {
+    if (_isReadOnlyTarget()) {
       return;
     }
-    const {focusedProcess} = this._service.viewModel;
+    const {focusedProcess} = _service.viewModel;
     if (focusedProcess) {
-      this._service.restartProcess(focusedProcess);
+      _service.restartProcess(focusedProcess);
     }
-  }
+}
 
-  _stepOver() {
-    if (this._isReadOnlyTarget()) {
+function _stepOver() {
+    if (_isReadOnlyTarget()) {
       return;
     }
-    const {focusedThread} = this._service.viewModel;
+    const {focusedThread} = _service.viewModel;
     if (focusedThread != null) {
       track(AnalyticsEvents.DEBUGGER_STEP_OVER);
       focusedThread.next();
     }
-  }
+}
 
-  _stepInto() {
-    if (this._isReadOnlyTarget()) {
+function _stepInto() {
+    if (_isReadOnlyTarget()) {
       return;
     }
-    const {focusedThread} = this._service.viewModel;
+    const {focusedThread} = _service.viewModel;
     if (focusedThread != null) {
       track(AnalyticsEvents.DEBUGGER_STEP_INTO);
       focusedThread.stepIn();
     }
-  }
+}
 
-  _stepOut() {
-    if (this._isReadOnlyTarget()) {
+function _stepOut() {
+    if (_isReadOnlyTarget()) {
       return;
     }
-    const {focusedThread} = this._service.viewModel;
+    const {focusedThread} = _service.viewModel;
     if (focusedThread != null) {
       track(AnalyticsEvents.DEBUGGER_STEP_OUT);
       focusedThread.stepOut();
     }
-  }
+}
 
-  _addBreakpoint(event: any) {
-    return this._executeWithEditorPath(event, (filePath, lineNumber) => {
-      this._service.addSourceBreakpoint(filePath, lineNumber);
+function _addBreakpoint(event: any) {
+    return _executeWithEditorPath(event, (filePath, lineNumber) => {
+      _service.addSourceBreakpoint(filePath, lineNumber);
     });
-  }
+}
 
-  _toggleBreakpoint(event: any) {
-    return this._executeWithEditorPath(event, (filePath, lineNumber) => {
-      this._service.toggleSourceBreakpoint(filePath, lineNumber);
+function _toggleBreakpoint(event: any) {
+    return _executeWithEditorPath(event, (filePath, lineNumber) => {
+      _service.toggleSourceBreakpoint(filePath, lineNumber);
     });
-  }
+}
 
-  _toggleBreakpointEnabled(event: any) {
-    this._executeWithEditorPath(event, (filePath, line) => {
-      const bp = this._service.getModel().getBreakpointAtLine(filePath, line);
+function _toggleBreakpointEnabled(event: any) {
+    _executeWithEditorPath(event, (filePath, line) => {
+      const bp = _service.getModel().getBreakpointAtLine(filePath, line);
 
       if (bp != null) {
-        this._service.enableOrDisableBreakpoints(!bp.enabled, bp);
+        _service.enableOrDisableBreakpoints(!bp.enabled, bp);
       }
     });
-  }
+}
 
-  _getBreakpointFromEvent(event: any): ?IBreakpoint {
+function _getBreakpointFromEvent(event: any): ?IBreakpoint {
     const target: HTMLElement = event.target;
     let bp = null;
     if (target != null && target.dataset != null) {
       if (target.dataset.bpId != null) {
         const bpId = target.dataset.bpId;
-        bp = this._service.getModel().getBreakpointById(bpId);
+        bp = _service.getModel().getBreakpointById(bpId);
       }
 
       if (bp == null) {
         const path = target.dataset.path;
         const line = parseInt(target.dataset.line, 10);
         if (path != null && line != null) {
-          bp = this._service.getModel().getBreakpointAtLine(path, line);
+          bp = _service.getModel().getBreakpointAtLine(path, line);
         }
       }
     }
 
     return bp;
-  }
+}
 
-  _configureBreakpoint(event: any) {
-    const bp = this._getBreakpointFromEvent(event);
-    if (bp != null && this._supportsConditionalBreakpoints()) {
+function _configureBreakpoint(event: any) {
+    const bp = _getBreakpointFromEvent(event);
+    if (bp != null && _supportsConditionalBreakpoints()) {
       // Open the configuration dialog.
       const container = new ReactMountRootElement();
       ReactDOM.render(
         <BreakpointConfigComponent
           breakpoint={bp}
-          service={this._service}
+          service={_service}
           onDismiss={() => {
             ReactDOM.unmountComponentAtNode(container);
           }}
@@ -669,22 +667,22 @@ class Activation {
         container,
       );
     }
-  }
+}
 
-  _terminateThread(event: any) {
-    if (this._isReadOnlyTarget()) {
+function _terminateThread(event: any) {
+    if (_isReadOnlyTarget()) {
       return;
     }
     const target: HTMLElement = event.target;
     if (target.dataset.threadid) {
       const threadId = parseInt(target.dataset.threadid, 10);
-      if (!Number.isNaN(threadId) && this._supportsTerminateThreadsRequest()) {
-        this._service.terminateThreads([threadId]);
+      if (!Number.isNaN(threadId) && _supportsTerminateThreadsRequest()) {
+        _service.terminateThreads([threadId]);
       }
     }
-  }
+}
 
-  _executeWithEditorPath<T>(
+function _executeWithEditorPath<T>(
     event: any,
     fn: (filePath: string, line: number) => T,
   ): ?T {
@@ -695,40 +693,40 @@ class Activation {
 
     const line = getLineForEvent(editor, event) + 1;
     return fn(nullthrows(editor.getPath()), line);
-  }
+}
 
-  _deleteBreakpoint(event: any): void {
-    const breakpoint = this._getBreakpointFromEvent(event);
+function _deleteBreakpoint(event: any): void {
+    const breakpoint = _getBreakpointFromEvent(event);
     if (breakpoint != null) {
-      this._service.removeBreakpoints(breakpoint.getId());
+      _service.removeBreakpoints(breakpoint.getId());
     }
-  }
+}
 
-  _deleteAllBreakpoints(): void {
-    this._service.removeBreakpoints();
-  }
+function _deleteAllBreakpoints(): void {
+    _service.removeBreakpoints();
+}
 
-  _enableAllBreakpoints(): void {
-    this._service.enableOrDisableBreakpoints(true);
-  }
+function _enableAllBreakpoints(): void {
+    _service.enableOrDisableBreakpoints(true);
+}
 
-  _disableAllBreakpoints(): void {
-    this._service.enableOrDisableBreakpoints(false);
-  }
+function _disableAllBreakpoints(): void {
+    _service.enableOrDisableBreakpoints(false);
+}
 
-  _renderConfigDialog(
+function _renderConfigDialog(
     panel: atom$Panel,
     args: LaunchAttachDialogArgs,
     dialogCloser: () => void,
   ): void {
-    if (this._selectedDebugConnection == null) {
+    if (_selectedDebugConnection == null) {
       // If no connection is selected yet, default to the local connection.
-      this._selectedDebugConnection = 'local';
+      _selectedDebugConnection = 'local';
     }
 
-    invariant(this._selectedDebugConnection != null);
+    invariant(_selectedDebugConnection != null);
 
-    const options = this._uiModel
+    const options = _uiModel
       .getConnections()
       .map(connection => {
         const displayName = nuclideUri.isRemote(connection)
@@ -743,7 +741,7 @@ class Activation {
       .sort((a, b) => a.label.localeCompare(b.label));
 
     // flowlint-next-line sketchy-null-string:off
-    const connection = this._selectedDebugConnection || 'local';
+    const connection = _selectedDebugConnection || 'local';
 
     ReactDOM.render(
       <DebuggerLaunchAttachUI
@@ -751,8 +749,8 @@ class Activation {
         initialSelectedTabName={args.selectedTabName}
         initialProviderConfig={args.config}
         connectionChanged={(newValue: ?string) => {
-          this._selectedDebugConnection = newValue;
-          this._renderConfigDialog(
+          _selectedDebugConnection = newValue;
+          _renderConfigDialog(
             panel,
             {dialogMode: args.dialogMode},
             dialogCloser,
@@ -761,22 +759,22 @@ class Activation {
         connection={connection}
         connectionOptions={options}
         dialogCloser={dialogCloser}
-        providers={this._connectionProviders}
+        providers={_connectionProviders}
       />,
       panel.getItem(),
     );
-  }
+}
 
-  _showLaunchAttachDialog(args: LaunchAttachDialogArgs): void {
+function _showLaunchAttachDialog(args: LaunchAttachDialogArgs): void {
     const {dialogMode} = args;
     if (
-      this._visibleLaunchAttachDialogMode != null &&
-      this._visibleLaunchAttachDialogMode !== dialogMode
+      _visibleLaunchAttachDialogMode != null &&
+      _visibleLaunchAttachDialogMode !== dialogMode
     ) {
       // If the dialog is already visible, but isn't the correct mode, close it before
       // re-opening the correct mode.
-      invariant(this._lauchAttachDialogCloser != null);
-      this._lauchAttachDialogCloser();
+      invariant(_lauchAttachDialogCloser != null);
+      _lauchAttachDialogCloser();
     }
 
     const disposables = new UniversalDisposable();
@@ -790,8 +788,8 @@ class Activation {
     parentEl.style.maxWidth = '100em';
 
     // Function callback that closes the dialog and frees all of its resources.
-    this._renderConfigDialog(pane, args, () => disposables.dispose());
-    this._lauchAttachDialogCloser = () => disposables.dispose();
+    _renderConfigDialog(pane, args, () => disposables.dispose());
+    _lauchAttachDialogCloser = () => disposables.dispose();
     disposables.add(
       pane.onDidChangeVisible(visible => {
         if (!visible) {
@@ -800,9 +798,9 @@ class Activation {
       }),
     );
     disposables.add(() => {
-      this._disposables.remove(disposables);
-      this._visibleLaunchAttachDialogMode = null;
-      this._lauchAttachDialogCloser = null;
+      _disposables.remove(disposables);
+      _visibleLaunchAttachDialogMode = null;
+      _lauchAttachDialogCloser = null;
       track(AnalyticsEvents.DEBUGGER_TOGGLE_ATTACH_DIALOG, {
         visible: false,
         dialogMode,
@@ -815,11 +813,11 @@ class Activation {
       visible: true,
       dialogMode,
     });
-    this._visibleLaunchAttachDialogMode = dialogMode;
-    this._disposables.add(disposables);
-  }
+    _visibleLaunchAttachDialogMode = dialogMode;
+    _disposables.add(disposables);
+}
 
-  _addToWatch() {
+function _addToWatch() {
     const editor = atom.workspace.getActiveTextEditor();
     if (!editor) {
       return;
@@ -831,20 +829,20 @@ class Activation {
 
     const watchExpression = selectedText || (expr && expr.wordMatch[0]);
     if (watchExpression != null && watchExpression.length > 0) {
-      this._service.addWatchExpression(watchExpression);
+      _service.addWatchExpression(watchExpression);
     }
-  }
+}
 
-  _runToLocation(event) {
-    if (this._isReadOnlyTarget()) {
+function _runToLocation(event) {
+    if (_isReadOnlyTarget()) {
       return;
     }
-    this._executeWithEditorPath(event, (path, line) => {
-      this._service.runToLocation(path, line);
+    _executeWithEditorPath(event, (path, line) => {
+      _service.runToLocation(path, line);
     });
-  }
+}
 
-  _copyDebuggerExpressionValue(event: Event) {
+function _copyDebuggerExpressionValue(event: Event) {
     const selection = window.getSelection();
     const clickedElement: HTMLElement = (event.target: any);
     const targetClass = '.nuclide-ui-expression-tree-value';
@@ -864,10 +862,10 @@ class Activation {
         atom.clipboard.write(copyElement.textContent);
       }
     }
-  }
+}
 
-  _copyDebuggerCallstack(event: Event) {
-    const {focusedThread} = this._service.viewModel;
+function _copyDebuggerCallstack(event: Event) {
+    const {focusedThread} = _service.viewModel;
     if (focusedThread != null) {
       let callstackText = '';
       // eslint-disable-next-line nuclide-internal/unused-subscription
@@ -885,68 +883,68 @@ class Activation {
           atom.clipboard.write(callstackText.trim());
         });
     }
-  }
+}
 
-  consumeCurrentWorkingDirectory(cwdApi: nuclide$CwdApi): IDisposable {
+export function consumeCurrentWorkingDirectory(cwdApi: nuclide$CwdApi): IDisposable {
     const updateSelectedConnection = directory => {
-      this._selectedDebugConnection = directory;
-      if (this._selectedDebugConnection != null) {
-        const conn = this._selectedDebugConnection;
+      _selectedDebugConnection = directory;
+      if (_selectedDebugConnection != null) {
+        const conn = _selectedDebugConnection;
         if (nuclideUri.isRemote(conn)) {
           // Use root instead of current directory as launch point for debugger.
-          this._selectedDebugConnection = nuclideUri.createRemoteUri(
+          _selectedDebugConnection = nuclideUri.createRemoteUri(
             nuclideUri.getHostname(conn),
             '/',
           );
         } else {
           // Use null instead of local path to use local debugger downstream.
-          this._selectedDebugConnection = null;
+          _selectedDebugConnection = null;
         }
       }
     };
     const disposable = cwdApi.observeCwd(updateSelectedConnection);
-    this._disposables.add(disposable);
+    _disposables.add(disposable);
     return new UniversalDisposable(() => {
       disposable.dispose();
-      this._disposables.remove(disposable);
+      _disposables.remove(disposable);
     });
-  }
+}
 
-  createAutocompleteProvider(): atom$AutocompleteProvider {
+export function createAutocompleteProvider(): atom$AutocompleteProvider {
     return {
       labels: ['nuclide-console'],
       selector: '*',
       filterSuggestions: true,
-      getSuggestions: this._getSuggestions.bind(this),
+      getSuggestions: _getSuggestions.bind(this),
     };
-  }
+}
 
-  consumeConsole(createConsole: ConsoleService): IDisposable {
+export function consumeConsole(createConsole: ConsoleService): IDisposable {
     return setConsoleService(createConsole);
-  }
+}
 
-  consumeTerminal(terminalApi: TerminalApi): IDisposable {
+export function consumeTerminal(terminalApi: TerminalApi): IDisposable {
     return setTerminalService(terminalApi);
-  }
+}
 
-  consumeRpcService(rpcService: nuclide$RpcService): IDisposable {
+export function consumeRpcService(rpcService: nuclide$RpcService): IDisposable {
     return setRpcService(rpcService);
-  }
+}
 
-  consumeRegisterExecutor(
+export function consumeRegisterExecutor(
     registerExecutor: RegisterExecutorFunction,
   ): IDisposable {
     return setConsoleRegisterExecutor(registerExecutor);
-  }
+}
 
-  consumeDebuggerProvider(provider: NuclideDebuggerProvider): IDisposable {
-    this._uiModel.addDebuggerProvider(provider);
+export function consumeDebuggerProvider(provider: NuclideDebuggerProvider): IDisposable {
+    _uiModel.addDebuggerProvider(provider);
     return new UniversalDisposable(() => {
-      this._uiModel.removeDebuggerProvider(provider);
+      _uiModel.removeDebuggerProvider(provider);
     });
-  }
+}
 
-  consumeDebuggerConfigurationProviders(
+export function consumeDebuggerConfigurationProviders(
     providers: Array<DebuggerConfigurationProvider>,
   ): IDisposable {
     invariant(Array.isArray(providers));
@@ -955,9 +953,9 @@ class Activation {
       disposable.add(addDebugConfigurationProvider(provider)),
     );
     return disposable;
-  }
+}
 
-  consumeToolBar(getToolBar: toolbar$GetToolbar): IDisposable {
+export function consumeToolBar(getToolBar: toolbar$GetToolbar): IDisposable {
     const toolBar = getToolBar('debugger');
     toolBar.addButton({
       iconset: 'icon-nuclicon',
@@ -969,11 +967,11 @@ class Activation {
     const disposable = new UniversalDisposable(() => {
       toolBar.removeItems();
     });
-    this._disposables.add(disposable);
+    _disposables.add(disposable);
     return disposable;
-  }
+}
 
-  consumeNotifications(
+export function consumeNotifications(
     raiseNativeNotification: (
       title: string,
       body: string,
@@ -982,31 +980,30 @@ class Activation {
     ) => ?IDisposable,
   ): void {
     setNotificationService(raiseNativeNotification);
-  }
+}
 
-  provideRemoteControlService(): RemoteControlService {
-    return new RemoteControlService(this._service);
-  }
+export function provideRemoteControlService(): RemoteControlService {
+    return new RemoteControlService(_service);
+}
 
-  consumeDatatipService(service: DatatipService): IDisposable {
+export function consumeDatatipService(service: DatatipService): IDisposable {
     const disposable = new UniversalDisposable(
-      service.addProvider(this._createDatatipProvider()),
+      service.addProvider(_createDatatipProvider()),
       setDatatipService(service),
     );
-    this._disposables.add(disposable);
+    _disposables.add(disposable);
     return disposable;
-  }
+}
 
-  _createDatatipProvider(): DatatipProvider {
+function _createDatatipProvider(): DatatipProvider {
     return {
       // Eligibility is determined online, based on registered EvaluationExpression providers.
       providerName: DATATIP_PACKAGE_NAME,
       priority: 1,
       datatip: (editor: TextEditor, position: atom$Point) => {
-        return debuggerDatatip(this._service, editor, position);
+        return debuggerDatatip(_service, editor, position);
       },
     };
-  }
 }
 
 function createDebuggerView(model: mixed): ?HTMLElement {
@@ -1026,5 +1023,3 @@ function createDebuggerView(model: mixed): ?HTMLElement {
 
   return null;
 }
-
-createPackage(module.exports, Activation);
