@@ -1,137 +1,102 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- * @format
- */
-
-import type {
-  DatatipService,
-  ConsoleService,
-  RegisterExecutorFunction,
-  TerminalApi,
-} from 'atom-ide-ui';
+import type { DatatipService, ConsoleService, RegisterExecutorFunction, TerminalApi } from "atom-ide-ui"
 import type {
   DebuggerConfigurationProvider,
   IProcessConfig,
   VsAdapterType,
-} from '@atom-ide-community/nuclide-debugger-common';
+} from "@atom-ide-community/nuclide-debugger-common"
 
-import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
+import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 
 type raiseNativeNotificationFunc = ?(
   title: string,
   body: string,
   timeout: number,
-  raiseIfAtomHasFocus: boolean,
-) => ?IDisposable;
+  raiseIfAtomHasFocus: boolean
+) => ?IDisposable
 
-let _raiseNativeNotification: ?raiseNativeNotificationFunc = null;
-let _registerExecutor: ?RegisterExecutorFunction = null;
-let _datatipService: ?DatatipService = null;
-let _createConsole: ?ConsoleService = null;
-let _terminalService: ?TerminalApi = null;
-let _rpcService: ?nuclide$RpcService = null;
-const _configurationProviders: Map<
-  VsAdapterType,
-  DebuggerConfigurationProvider,
-> = new Map();
+let _raiseNativeNotification: ?raiseNativeNotificationFunc = null
+let _registerExecutor: ?RegisterExecutorFunction = null
+let _datatipService: ?DatatipService = null
+let _createConsole: ?ConsoleService = null
+let _terminalService: ?TerminalApi = null
+let _rpcService: ?nuclide$RpcService = null
+const _configurationProviders: Map<VsAdapterType, DebuggerConfigurationProvider> = new Map()
 
 export function setConsoleService(createConsole: ConsoleService): IDisposable {
-  _createConsole = createConsole;
+  _createConsole = createConsole
   return new UniversalDisposable(() => {
-    _createConsole = null;
-  });
+    _createConsole = null
+  })
 }
 
 export function getConsoleService(): ?ConsoleService {
-  return _createConsole;
+  return _createConsole
 }
 
-export function setConsoleRegisterExecutor(
-  registerExecutor: RegisterExecutorFunction,
-): IDisposable {
-  _registerExecutor = registerExecutor;
+export function setConsoleRegisterExecutor(registerExecutor: RegisterExecutorFunction): IDisposable {
+  _registerExecutor = registerExecutor
   return new UniversalDisposable(() => {
-    _registerExecutor = null;
-  });
+    _registerExecutor = null
+  })
 }
 
 export function getConsoleRegisterExecutor(): ?RegisterExecutorFunction {
-  return _registerExecutor;
+  return _registerExecutor
 }
 
 export function setDatatipService(datatipService: DatatipService): IDisposable {
-  _datatipService = datatipService;
+  _datatipService = datatipService
   return new UniversalDisposable(() => {
-    _datatipService = null;
-  });
+    _datatipService = null
+  })
 }
 
 export function getDatatipService(): ?DatatipService {
-  return _datatipService;
+  return _datatipService
 }
 
-export function setNotificationService(
-  raiseNativeNotification: raiseNativeNotificationFunc,
-): void {
-  _raiseNativeNotification = raiseNativeNotification;
+export function setNotificationService(raiseNativeNotification: raiseNativeNotificationFunc): void {
+  _raiseNativeNotification = raiseNativeNotification
 }
 
 export function getNotificationService(): ?raiseNativeNotificationFunc {
-  return _raiseNativeNotification;
+  return _raiseNativeNotification
 }
 
 export function setTerminalService(terminalService: TerminalApi): IDisposable {
-  _terminalService = terminalService;
+  _terminalService = terminalService
   return new UniversalDisposable(() => {
-    _terminalService = null;
-  });
+    _terminalService = null
+  })
 }
 
 export function getTerminalService(): ?TerminalApi {
-  return _terminalService;
+  return _terminalService
 }
 
 export function setRpcService(rpcService: nuclide$RpcService): IDisposable {
-  _rpcService = rpcService;
+  _rpcService = rpcService
   return new UniversalDisposable(() => {
-    _rpcService = null;
-  });
+    _rpcService = null
+  })
 }
 
 export function isNuclideEnvironment(): boolean {
-  return _rpcService != null;
+  return _rpcService != null
 }
 
-export function addDebugConfigurationProvider(
-  provider: DebuggerConfigurationProvider,
-): IDisposable {
-  const existingProvider = _configurationProviders.get(provider.adapterType);
+export function addDebugConfigurationProvider(provider: DebuggerConfigurationProvider): IDisposable {
+  const existingProvider = _configurationProviders.get(provider.adapterType)
   if (existingProvider != null) {
-    throw new Error(
-      'Debug Configuration Provider already exists for adapter type: ' +
-        provider.adapterType,
-    );
+    throw new Error("Debug Configuration Provider already exists for adapter type: " + provider.adapterType)
   }
-  _configurationProviders.set(provider.adapterType, provider);
+  _configurationProviders.set(provider.adapterType, provider)
   return new UniversalDisposable(() => {
-    _configurationProviders.delete(provider.adapterType);
-  });
+    _configurationProviders.delete(provider.adapterType)
+  })
 }
 
-export async function resolveDebugConfiguration(
-  configuration: IProcessConfig,
-): Promise<IProcessConfig> {
-  const existingProvider = _configurationProviders.get(
-    configuration.adapterType,
-  );
-  return existingProvider != null
-    ? existingProvider.resolveConfiguration(configuration)
-    : configuration;
+export async function resolveDebugConfiguration(configuration: IProcessConfig): Promise<IProcessConfig> {
+  const existingProvider = _configurationProviders.get(configuration.adapterType)
+  return existingProvider != null ? existingProvider.resolveConfiguration(configuration) : configuration
 }

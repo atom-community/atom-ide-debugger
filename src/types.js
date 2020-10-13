@@ -1,16 +1,4 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @flow
- * @format
- */
-
-/**
  * The following interfaces models a debug service and data model layer built on top of
  * VSCode debugger protocol and were modeled after VSCode's debugger implementation
  * in https://github.com/Microsoft/vscode/tree/master/src/vs/workbench/parts/debug
@@ -40,15 +28,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import type {Expected} from '@atom-ide-community/nuclide-commons/expected';
-import type {Observable} from 'rxjs';
-import * as DebugProtocol from 'vscode-debugprotocol';
-import type {IProcessConfig} from '@atom-ide-community/nuclide-debugger-common';
+import type { Expected } from "@atom-ide-community/nuclide-commons/expected"
+import type { Observable } from "rxjs"
+import * as DebugProtocol from "vscode-debugprotocol"
+import type { IProcessConfig } from "@atom-ide-community/nuclide-debugger-common"
 
 export interface RemoteDebuggerService {
-  onDidChangeDebuggerSessions(
-    callback: (sessionConfigs: IProcessConfig[]) => mixed,
-  ): IDisposable;
+  onDidChangeDebuggerSessions(callback: (sessionConfigs: IProcessConfig[]) => mixed): IDisposable;
   startVspDebugging(config: IProcessConfig): Promise<void>;
   getDebugSessions(): IProcessConfig[];
 }
@@ -69,7 +55,7 @@ export interface ISource {
   openInEditor(): Promise<atom$TextEditor>;
 }
 
-export type SourcePresentationHint = 'normal' | 'emphasize' | 'deemphasize';
+export type SourcePresentationHint = "normal" | "emphasize" | "deemphasize"
 
 export interface IExpressionContainer extends ITreeElement {
   hasChildren(): boolean;
@@ -84,14 +70,10 @@ export interface IExpression extends IExpressionContainer {
   toString(): string;
 }
 
-export type ContextType = 'hover' | 'watch' | 'repl';
+export type ContextType = "hover" | "watch" | "repl"
 
 export interface IEvaluatableExpression extends IExpression {
-  evaluate(
-    process: ?IProcess,
-    stackFrame: ?IStackFrame,
-    context: ContextType,
-  ): Promise<void>;
+  evaluate(process: ?IProcess, stackFrame: ?IStackFrame, context: ContextType): Promise<void>;
 }
 
 export interface IVariable extends IExpression {
@@ -101,21 +83,11 @@ export interface IVariable extends IExpression {
 }
 
 export interface ISession {
-  stackTrace(
-    args: DebugProtocol.StackTraceArguments,
-  ): Promise<DebugProtocol.StackTraceResponse>;
-  exceptionInfo(
-    args: DebugProtocol.ExceptionInfoArguments,
-  ): Promise<DebugProtocol.ExceptionInfoResponse>;
-  scopes(
-    args: DebugProtocol.ScopesArguments,
-  ): Promise<DebugProtocol.ScopesResponse>;
-  variables(
-    args: DebugProtocol.VariablesArguments,
-  ): Promise<DebugProtocol.VariablesResponse>;
-  evaluate(
-    args: DebugProtocol.EvaluateArguments,
-  ): Promise<DebugProtocol.EvaluateResponse>;
+  stackTrace(args: DebugProtocol.StackTraceArguments): Promise<DebugProtocol.StackTraceResponse>;
+  exceptionInfo(args: DebugProtocol.ExceptionInfoArguments): Promise<DebugProtocol.ExceptionInfoResponse>;
+  scopes(args: DebugProtocol.ScopesArguments): Promise<DebugProtocol.ScopesResponse>;
+  variables(args: DebugProtocol.VariablesArguments): Promise<DebugProtocol.VariablesResponse>;
+  evaluate(args: DebugProtocol.EvaluateArguments): Promise<DebugProtocol.EvaluateResponse>;
   capabilities: DebugProtocol.Capabilities;
   disconnect(restart?: boolean, force?: boolean): Promise<void>;
   custom(request: string, args: any): Promise<DebugProtocol.CustomResponse>;
@@ -124,36 +96,18 @@ export interface ISession {
   observeStopEvents(): Observable<DebugProtocol.StoppedEvent>;
   restartFrame(
     args: DebugProtocol.RestartFrameArguments,
-    threadId: number,
+    threadId: number
   ): Promise<DebugProtocol.RestartFrameResponse>;
   next(args: DebugProtocol.NextArguments): Promise<DebugProtocol.NextResponse>;
-  stepIn(
-    args: DebugProtocol.StepInArguments,
-  ): Promise<DebugProtocol.StepInResponse>;
-  stepOut(
-    args: DebugProtocol.StepOutArguments,
-  ): Promise<DebugProtocol.StepOutResponse>;
-  continue(
-    args: DebugProtocol.ContinueArguments,
-  ): Promise<DebugProtocol.ContinueResponse>;
-  pause(
-    args: DebugProtocol.PauseArguments,
-  ): Promise<DebugProtocol.PauseResponse>;
-  stepBack(
-    args: DebugProtocol.StepBackArguments,
-  ): Promise<DebugProtocol.StepBackResponse>;
-  reverseContinue(
-    args: DebugProtocol.ReverseContinueArguments,
-  ): Promise<DebugProtocol.ReverseContinueResponse>;
-  completions(
-    args: DebugProtocol.CompletionsArguments,
-  ): Promise<DebugProtocol.CompletionsResponse>;
-  setVariable(
-    args: DebugProtocol.SetVariableArguments,
-  ): Promise<DebugProtocol.SetVariableResponse>;
-  source(
-    args: DebugProtocol.SourceArguments,
-  ): Promise<DebugProtocol.SourceResponse>;
+  stepIn(args: DebugProtocol.StepInArguments): Promise<DebugProtocol.StepInResponse>;
+  stepOut(args: DebugProtocol.StepOutArguments): Promise<DebugProtocol.StepOutResponse>;
+  continue(args: DebugProtocol.ContinueArguments): Promise<DebugProtocol.ContinueResponse>;
+  pause(args: DebugProtocol.PauseArguments): Promise<DebugProtocol.PauseResponse>;
+  stepBack(args: DebugProtocol.StepBackArguments): Promise<DebugProtocol.StepBackResponse>;
+  reverseContinue(args: DebugProtocol.ReverseContinueArguments): Promise<DebugProtocol.ReverseContinueResponse>;
+  completions(args: DebugProtocol.CompletionsArguments): Promise<DebugProtocol.CompletionsResponse>;
+  setVariable(args: DebugProtocol.SetVariableArguments): Promise<DebugProtocol.SetVariableResponse>;
+  source(args: DebugProtocol.SourceArguments): Promise<DebugProtocol.SourceResponse>;
 }
 
 export interface IThread extends ITreeElement {
@@ -251,7 +205,7 @@ export interface IProcess extends ITreeElement {
     frameId: number,
     text: string,
     position: atom$Point,
-    overwriteBefore: number,
+    overwriteBefore: number
   ): Promise<Array<DebugProtocol.CompletionItem>>;
 }
 
@@ -279,7 +233,7 @@ export type IExceptionInfo = {
   description: ?string,
   breakMode: ?string,
   details: ?DebugProtocol.ExceptionDetails,
-};
+}
 
 export interface IViewModel {
   /**
@@ -301,13 +255,9 @@ export interface IViewModel {
   setFocusedThread(thread: ?IThread, explicit: boolean): void;
   setFocusedStackFrame(stackFrame: ?IStackFrame, explicit: boolean): void;
 
-  onDidChangeDebuggerFocus(
-    callback: (data: {explicit: boolean}) => mixed,
-  ): IDisposable;
+  onDidChangeDebuggerFocus(callback: (data: { explicit: boolean }) => mixed): IDisposable;
 
-  onDidChangeExpressionContext(
-    callback: (data: {explicit: boolean}) => mixed,
-  ): IDisposable;
+  onDidChangeExpressionContext(callback: (data: { explicit: boolean }) => mixed): IDisposable;
 }
 
 export interface IModel extends ITreeElement {
@@ -323,19 +273,12 @@ export interface IModel extends ITreeElement {
 
   onDidChangeBreakpoints(callback: () => mixed): IDisposable;
   onDidChangeCallStack(callback: () => mixed): IDisposable;
-  onDidChangeWatchExpressions(
-    callback: (expression: ?IExpression) => mixed,
-  ): IDisposable;
+  onDidChangeWatchExpressions(callback: (expression: ?IExpression) => mixed): IDisposable;
   onDidChangeProcesses(callback: () => mixed): IDisposable;
 }
 
 /* Debugger mode */
-export type DebuggerModeType =
-  | 'starting'
-  | 'running'
-  | 'paused'
-  | 'stopping'
-  | 'stopped';
+export type DebuggerModeType = "starting" | "running" | "paused" | "stopping" | "stopped"
 
 export interface IDebugService {
   +viewModel: IViewModel;
@@ -346,15 +289,9 @@ export interface IDebugService {
    * This can happen if a thread hits a breakpoint, throws an exception, etc.
    */
   onDidChangeActiveThread(callback: () => mixed): IDisposable;
-  onDidChangeProcessMode(
-    callback: (data: {process: IProcess, mode: DebuggerModeType}) => mixed,
-  ): IDisposable;
-  onDidStartDebugSession(
-    callback: (config: IProcessConfig) => mixed,
-  ): IDisposable;
-  onDidCustomEvent(
-    callback: (event: DebugProtocol.DebugEvent) => mixed,
-  ): IDisposable;
+  onDidChangeProcessMode(callback: (data: { process: IProcess, mode: DebuggerModeType }) => mixed): IDisposable;
+  onDidStartDebugSession(callback: (config: IProcessConfig) => mixed): IDisposable;
+  onDidCustomEvent(callback: (event: DebugProtocol.DebugEvent) => mixed): IDisposable;
 
   /**
    * Adds new breakpoints to the model. Notifies debug adapter of breakpoint changes.
@@ -370,10 +307,7 @@ export interface IDebugService {
    * Enables or disables all breakpoints. If breakpoint is passed only enables or disables the passed breakpoint.
    * Notifies debug adapter of breakpoint changes.
    */
-  enableOrDisableBreakpoints(
-    enable: boolean,
-    breakpoint?: IEnableable,
-  ): Promise<void>;
+  enableOrDisableBreakpoints(enable: boolean, breakpoint?: IEnableable): Promise<void>;
 
   toggleSourceBreakpoint(uri: string, line: number): Promise<void>;
 
@@ -502,14 +436,14 @@ export type IRawStopppedUpdate = {
   sessionId: string,
   threadId: ?number,
   stoppedDetails: IRawStoppedDetails,
-};
+}
 
 export type IRawThreadUpdate = {
   sessionId: string,
   thread: DebugProtocol.Thread,
-};
+}
 
-export type IRawModelUpdate = IRawStopppedUpdate | IRawThreadUpdate;
+export type IRawModelUpdate = IRawStopppedUpdate | IRawThreadUpdate
 
 export interface IRawStoppedDetails {
   reason?: string;
@@ -529,4 +463,4 @@ export type SerializedState = {
   watchExpressions: ?Array<string>,
   showDebugger: boolean,
   workspaceDocksVisibility: Array<boolean>,
-};
+}

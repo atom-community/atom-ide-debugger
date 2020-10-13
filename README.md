@@ -1,6 +1,7 @@
 # atom-ide-debugger
 
 You need to install [atom-ide-console](https://github.com/atom-ide-community/atom-ide-debugger) then:
+
 ```
 apm install
 pnpm babel
