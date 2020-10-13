@@ -72,18 +72,17 @@ type LaunchAttachDialogArgs = {
   config?: {[string]: mixed},
 };
 
-class Activation {
-  _disposables: UniversalDisposable;
-  _uiModel: DebuggerUiModel;
-  _breakpointManager: BreakpointManager;
-  _service: DebugService;
-  _layoutManager: DebuggerLayoutManager;
-  _selectedDebugConnection: ?string;
-  _visibleLaunchAttachDialogMode: ?DebuggerConfigAction;
-  _lauchAttachDialogCloser: ?() => void;
-  _connectionProviders: Map<string, Array<DebuggerLaunchAttachProvider>>;
+let _disposables: UniversalDisposable;
+let _uiModel: DebuggerUiModel;
+let _breakpointManager: BreakpointManager;
+let _service: DebugService;
+let _layoutManager: DebuggerLayoutManager;
+let _selectedDebugConnection: ?string;
+let _visibleLaunchAttachDialogMode: ?DebuggerConfigAction;
+let _lauchAttachDialogCloser: ?() => void;
+let _connectionProviders: Map<string, Array<DebuggerLaunchAttachProvider>>;
 
-  constructor(state: ?SerializedState) {
+export function activate(state: ?SerializedState) {
     atom.views.addViewProvider(DebuggerPaneViewModel, createDebuggerView);
     atom.views.addViewProvider(
       DebuggerPaneContainerViewModel,
@@ -386,9 +385,9 @@ class Activation {
     );
 
     sortMenuGroups(['Debugger']);
-  }
+}
 
-  _supportsConditionalBreakpoints(): boolean {
+function _supportsConditionalBreakpoints(): boolean {
     // If currently debugging, return whether or not the current debugger supports this.
     const {focusedProcess} = this._service.viewModel;
     if (focusedProcess == null) {
@@ -401,9 +400,9 @@ class Activation {
         focusedProcess.session.capabilities.supportsConditionalBreakpoints,
       );
     }
-  }
+}
 
-  _supportsTerminateThreadsRequest(): boolean {
+function _supportsTerminateThreadsRequest(): boolean {
     // If currently debugging, return whether or not the current debugger supports this.
     const {focusedProcess} = this._service.viewModel;
     if (focusedProcess == null) {
@@ -413,9 +412,9 @@ class Activation {
         focusedProcess.session.capabilities.supportsTerminateThreadsRequest,
       );
     }
-  }
+}
 
-  _setProvidersForConnection(connection: NuclideUri): void {
+function _setProvidersForConnection(connection: NuclideUri): void {
     const key = nuclideUri.isRemote(connection)
       ? nuclideUri.getHostname(connection)
       : 'local';
@@ -423,9 +422,9 @@ class Activation {
       connection,
     );
     this._connectionProviders.set(key, availableProviders);
-  }
+}
 
-  async _getSuggestions(
+async function _getSuggestions(
     request: atom$AutocompleteRequest,
   ): Promise<?Array<atom$AutocompleteSuggestion>> {
     let text = request.editor.getText();
@@ -453,9 +452,9 @@ class Activation {
         type: item.type,
       }));
     }
-  }
+}
 
-  serialize(): SerializedState {
+export function serialize(): SerializedState {
     const model = this._service.getModel();
     const state = {
       sourceBreakpoints: model.getBreakpoints(),
@@ -466,13 +465,13 @@ class Activation {
       workspaceDocksVisibility: this._layoutManager.getWorkspaceDocksVisibility(),
     };
     return state;
-  }
+}
 
-  dispose() {
+export function deactivate() {
     this._disposables.dispose();
-  }
+}
 
-  _registerCommandsContextMenuAndOpener(): UniversalDisposable {
+function _registerCommandsContextMenuAndOpener(): UniversalDisposable {
     const disposable = new UniversalDisposable(
       atom.workspace.addOpener(uri => {
         return this._layoutManager.getModelForDebuggerUri(uri);
@@ -539,16 +538,16 @@ class Activation {
       }),
     );
     return disposable;
-  }
+}
 
-  _isReadOnlyTarget(): boolean {
+function _isReadOnlyTarget(): boolean {
     const {focusedProcess} = this._service.viewModel;
     return (
       focusedProcess != null && Boolean(focusedProcess.configuration.isReadOnly)
     );
-  }
+}
 
-  _continue() {
+function _continue() {
     if (this._isReadOnlyTarget()) {
       return;
     }
@@ -557,16 +556,16 @@ class Activation {
       track(AnalyticsEvents.DEBUGGER_STEP_CONTINUE);
       focusedThread.continue();
     }
-  }
+}
 
-  _stop() {
+function _stop() {
     const {focusedProcess} = this._service.viewModel;
     if (focusedProcess) {
       this._service.stopProcess(focusedProcess);
     }
-  }
+}
 
-  _restart() {
+function _restart() {
     if (this._isReadOnlyTarget()) {
       return;
     }
@@ -574,9 +573,9 @@ class Activation {
     if (focusedProcess) {
       this._service.restartProcess(focusedProcess);
     }
-  }
+}
 
-  _stepOver() {
+function _stepOver() {
     if (this._isReadOnlyTarget()) {
       return;
     }
@@ -585,9 +584,9 @@ class Activation {
       track(AnalyticsEvents.DEBUGGER_STEP_OVER);
       focusedThread.next();
     }
-  }
+}
 
-  _stepInto() {
+function _stepInto() {
     if (this._isReadOnlyTarget()) {
       return;
     }
@@ -596,9 +595,9 @@ class Activation {
       track(AnalyticsEvents.DEBUGGER_STEP_INTO);
       focusedThread.stepIn();
     }
-  }
+}
 
-  _stepOut() {
+function _stepOut() {
     if (this._isReadOnlyTarget()) {
       return;
     }
@@ -607,21 +606,21 @@ class Activation {
       track(AnalyticsEvents.DEBUGGER_STEP_OUT);
       focusedThread.stepOut();
     }
-  }
+}
 
-  _addBreakpoint(event: any) {
+function _addBreakpoint(event: any) {
     return this._executeWithEditorPath(event, (filePath, lineNumber) => {
       this._service.addSourceBreakpoint(filePath, lineNumber);
     });
-  }
+}
 
-  _toggleBreakpoint(event: any) {
+function _toggleBreakpoint(event: any) {
     return this._executeWithEditorPath(event, (filePath, lineNumber) => {
       this._service.toggleSourceBreakpoint(filePath, lineNumber);
     });
-  }
+}
 
-  _toggleBreakpointEnabled(event: any) {
+function _toggleBreakpointEnabled(event: any) {
     this._executeWithEditorPath(event, (filePath, line) => {
       const bp = this._service.getModel().getBreakpointAtLine(filePath, line);
 
@@ -629,9 +628,9 @@ class Activation {
         this._service.enableOrDisableBreakpoints(!bp.enabled, bp);
       }
     });
-  }
+}
 
-  _getBreakpointFromEvent(event: any): ?IBreakpoint {
+function _getBreakpointFromEvent(event: any): ?IBreakpoint {
     const target: HTMLElement = event.target;
     let bp = null;
     if (target != null && target.dataset != null) {
@@ -650,9 +649,9 @@ class Activation {
     }
 
     return bp;
-  }
+}
 
-  _configureBreakpoint(event: any) {
+function _configureBreakpoint(event: any) {
     const bp = this._getBreakpointFromEvent(event);
     if (bp != null && this._supportsConditionalBreakpoints()) {
       // Open the configuration dialog.
@@ -669,9 +668,9 @@ class Activation {
         container,
       );
     }
-  }
+}
 
-  _terminateThread(event: any) {
+function _terminateThread(event: any) {
     if (this._isReadOnlyTarget()) {
       return;
     }
@@ -682,9 +681,9 @@ class Activation {
         this._service.terminateThreads([threadId]);
       }
     }
-  }
+}
 
-  _executeWithEditorPath<T>(
+function _executeWithEditorPath<T>(
     event: any,
     fn: (filePath: string, line: number) => T,
   ): ?T {
@@ -695,28 +694,28 @@ class Activation {
 
     const line = getLineForEvent(editor, event) + 1;
     return fn(nullthrows(editor.getPath()), line);
-  }
+}
 
-  _deleteBreakpoint(event: any): void {
+function _deleteBreakpoint(event: any): void {
     const breakpoint = this._getBreakpointFromEvent(event);
     if (breakpoint != null) {
       this._service.removeBreakpoints(breakpoint.getId());
     }
-  }
+}
 
-  _deleteAllBreakpoints(): void {
+function _deleteAllBreakpoints(): void {
     this._service.removeBreakpoints();
-  }
+}
 
-  _enableAllBreakpoints(): void {
+function _enableAllBreakpoints(): void {
     this._service.enableOrDisableBreakpoints(true);
-  }
+}
 
-  _disableAllBreakpoints(): void {
+function _disableAllBreakpoints(): void {
     this._service.enableOrDisableBreakpoints(false);
-  }
+}
 
-  _renderConfigDialog(
+function _renderConfigDialog(
     panel: atom$Panel,
     args: LaunchAttachDialogArgs,
     dialogCloser: () => void,
@@ -765,9 +764,9 @@ class Activation {
       />,
       panel.getItem(),
     );
-  }
+}
 
-  _showLaunchAttachDialog(args: LaunchAttachDialogArgs): void {
+function _showLaunchAttachDialog(args: LaunchAttachDialogArgs): void {
     const {dialogMode} = args;
     if (
       this._visibleLaunchAttachDialogMode != null &&
@@ -817,9 +816,9 @@ class Activation {
     });
     this._visibleLaunchAttachDialogMode = dialogMode;
     this._disposables.add(disposables);
-  }
+}
 
-  _addToWatch() {
+function _addToWatch() {
     const editor = atom.workspace.getActiveTextEditor();
     if (!editor) {
       return;
@@ -833,18 +832,18 @@ class Activation {
     if (watchExpression != null && watchExpression.length > 0) {
       this._service.addWatchExpression(watchExpression);
     }
-  }
+}
 
-  _runToLocation(event) {
+function _runToLocation(event) {
     if (this._isReadOnlyTarget()) {
       return;
     }
     this._executeWithEditorPath(event, (path, line) => {
       this._service.runToLocation(path, line);
     });
-  }
+}
 
-  _copyDebuggerExpressionValue(event: Event) {
+function _copyDebuggerExpressionValue(event: Event) {
     const selection = window.getSelection();
     const clickedElement: HTMLElement = (event.target: any);
     const targetClass = '.nuclide-ui-expression-tree-value';
@@ -864,9 +863,9 @@ class Activation {
         atom.clipboard.write(copyElement.textContent);
       }
     }
-  }
+}
 
-  _copyDebuggerCallstack(event: Event) {
+function _copyDebuggerCallstack(event: Event) {
     const {focusedThread} = this._service.viewModel;
     if (focusedThread != null) {
       let callstackText = '';
@@ -885,9 +884,9 @@ class Activation {
           atom.clipboard.write(callstackText.trim());
         });
     }
-  }
+}
 
-  consumeCurrentWorkingDirectory(cwdApi: nuclide$CwdApi): IDisposable {
+export function consumeCurrentWorkingDirectory(cwdApi: nuclide$CwdApi): IDisposable {
     const updateSelectedConnection = directory => {
       this._selectedDebugConnection = directory;
       if (this._selectedDebugConnection != null) {
@@ -910,43 +909,43 @@ class Activation {
       disposable.dispose();
       this._disposables.remove(disposable);
     });
-  }
+}
 
-  createAutocompleteProvider(): atom$AutocompleteProvider {
+export function createAutocompleteProvider(): atom$AutocompleteProvider {
     return {
       labels: ['nuclide-console'],
       selector: '*',
       filterSuggestions: true,
       getSuggestions: this._getSuggestions.bind(this),
     };
-  }
+}
 
-  consumeConsole(createConsole: ConsoleService): IDisposable {
+export function consumeConsole(createConsole: ConsoleService): IDisposable {
     return setConsoleService(createConsole);
-  }
+}
 
-  consumeTerminal(terminalApi: TerminalApi): IDisposable {
+export function consumeTerminal(terminalApi: TerminalApi): IDisposable {
     return setTerminalService(terminalApi);
-  }
+}
 
-  consumeRpcService(rpcService: nuclide$RpcService): IDisposable {
+export function consumeRpcService(rpcService: nuclide$RpcService): IDisposable {
     return setRpcService(rpcService);
-  }
+}
 
-  consumeRegisterExecutor(
+export function consumeRegisterExecutor(
     registerExecutor: RegisterExecutorFunction,
   ): IDisposable {
     return setConsoleRegisterExecutor(registerExecutor);
-  }
+}
 
-  consumeDebuggerProvider(provider: NuclideDebuggerProvider): IDisposable {
+export function consumeDebuggerProvider(provider: NuclideDebuggerProvider): IDisposable {
     this._uiModel.addDebuggerProvider(provider);
     return new UniversalDisposable(() => {
       this._uiModel.removeDebuggerProvider(provider);
     });
-  }
+}
 
-  consumeDebuggerConfigurationProviders(
+export function consumeDebuggerConfigurationProviders(
     providers: Array<DebuggerConfigurationProvider>,
   ): IDisposable {
     invariant(Array.isArray(providers));
@@ -955,9 +954,9 @@ class Activation {
       disposable.add(addDebugConfigurationProvider(provider)),
     );
     return disposable;
-  }
+}
 
-  consumeToolBar(getToolBar: toolbar$GetToolbar): IDisposable {
+export function consumeToolBar(getToolBar: toolbar$GetToolbar): IDisposable {
     const toolBar = getToolBar('debugger');
     toolBar.addButton({
       iconset: 'icon-nuclicon',
@@ -971,9 +970,9 @@ class Activation {
     });
     this._disposables.add(disposable);
     return disposable;
-  }
+}
 
-  consumeNotifications(
+export function consumeNotifications(
     raiseNativeNotification: (
       title: string,
       body: string,
@@ -982,22 +981,22 @@ class Activation {
     ) => ?IDisposable,
   ): void {
     setNotificationService(raiseNativeNotification);
-  }
+}
 
-  provideRemoteControlService(): RemoteControlService {
+export function provideRemoteControlService(): RemoteControlService {
     return new RemoteControlService(this._service);
-  }
+}
 
-  consumeDatatipService(service: DatatipService): IDisposable {
+export function consumeDatatipService(service: DatatipService): IDisposable {
     const disposable = new UniversalDisposable(
       service.addProvider(this._createDatatipProvider()),
       setDatatipService(service),
     );
     this._disposables.add(disposable);
     return disposable;
-  }
+}
 
-  _createDatatipProvider(): DatatipProvider {
+function _createDatatipProvider(): DatatipProvider {
     return {
       // Eligibility is determined online, based on registered EvaluationExpression providers.
       providerName: DATATIP_PACKAGE_NAME,
@@ -1006,7 +1005,6 @@ class Activation {
         return debuggerDatatip(this._service, editor, position);
       },
     };
-  }
 }
 
 function createDebuggerView(model: mixed): ?HTMLElement {
@@ -1026,5 +1024,3 @@ function createDebuggerView(model: mixed): ?HTMLElement {
 
   return null;
 }
-
-createPackage(module.exports, Activation);
