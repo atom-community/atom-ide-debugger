@@ -31,7 +31,6 @@ import {observeRemovedHostnames} from '@atom-ide-community/nuclide-commons-atom/
 import BreakpointManager from './BreakpointManager';
 import {AnalyticsEvents, DebuggerMode} from './constants';
 import BreakpointConfigComponent from './ui/BreakpointConfigComponent';
-import createPackage from '@atom-ide-community/nuclide-commons-atom/createPackage';
 import {getLineForEvent} from './utils';
 import UniversalDisposable from '@atom-ide-community/nuclide-commons/UniversalDisposable';
 import invariant from 'assert';
