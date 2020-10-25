@@ -1216,11 +1216,20 @@ export default class DebugService implements IDebugService {
     }
 
     try {
-      const adapterExecutable = await this._resolveAdapterExecutable(rawConfiguration)
-      const configuration = await resolveDebugConfiguration({
-        ...rawConfiguration,
-        adapterExecutable,
-      })
+      let configuration: IProcessConfig
+      let adapterExecutable: VSAdapterExecutableInfo
+      // if service does not provide adapterExecutable use the hardcoded values in debugger-registry
+      if (!rawConfiguration.adapterExecutable) {
+        adapterExecutable = await this._resolveAdapterExecutable(rawConfiguration)
+        configuration = {
+          ...rawConfiguration,
+          adapterExecutable,
+        }
+      } else {
+        // already adapterExecutable is provided by the provider so the configuration is not raw.
+        configuration = rawConfiguration
+      }
+      configuration = await resolveDebugConfiguration(configuration)
       const { adapterType, onDebugStartingCallback, onDebugStartedCallback, onDebugRunningCallback } = configuration
 
       track(AnalyticsEvents.DEBUGGER_START, {
