@@ -3,7 +3,7 @@
   "main": "dist/main.js",
   "version": "0.1.0",
   "author": "Amin Yahyaabadi",
-  "description": "  ",
+  "description": "Debugger for Atom IDE",
   "keywords": [],
   "repository": "https://github.com/atom-ide-community/atom-ide-debugger",
   "license": "MIT",
