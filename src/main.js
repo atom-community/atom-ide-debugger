@@ -69,7 +69,31 @@ let _visibleLaunchAttachDialogMode: ?DebuggerConfigAction
 let _lauchAttachDialogCloser: ?() => void
 let _connectionProviders: Map<string, Array<DebuggerLaunchAttachProvider>>
 
+async function package_deps() {
+  // Add entries from package-deps here manually
+  // (to prevent loading atom-package-deps and package.json when the deps are already loaded)
+  const deps = ["atom-ide-base", "atom-ide-console"]
+  if (deps.some((p) => !atom.packages.isPackageLoaded(p))) {
+    await import("atom-package-deps").then(async (atom_package_deps) => {
+      // install if not installed
+      await atom_package_deps.install("atom-ide-debugger", false)
+      // enable if disabled
+      deps
+        .filter((p) => !atom.packages.isPackageLoaded(p))
+        .forEach((p) => {
+          atom.notifications.addInfo(`Enabling package ${p} that is needed for atom-ide-debugger`)
+          atom.packages.enablePackage(p)
+        })
+    })
+  }
+}
+
 export function activate(state: ?SerializedState) {
+  package_deps()
+    .catch(() => {
+      atom.notifications.addError("atom-ide-debugger failed in installing its dependencies.")
+    })
+
   atom.views.addViewProvider(DebuggerPaneViewModel, createDebuggerView)
   atom.views.addViewProvider(DebuggerPaneContainerViewModel, createDebuggerView)
   _service = new DebugService(state)
