@@ -64,10 +64,7 @@
     "npm-check-updates": "9.0.4",
     "build-commit": "0.1.1"
   },
-  "package-deps": [
-    "atom-ide-base",
-    "atom-ide-console"
-  ],
+  "package-deps": [],
   "configSchema": {
     "showDebuggerOnBpSet": {
       "title": "Show debugger on breakpoint set",
