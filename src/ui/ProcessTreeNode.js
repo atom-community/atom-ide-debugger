@@ -6,7 +6,7 @@ import { observableFromSubscribeFunction } from "@atom-ide-community/nuclide-com
 import { fastDebounce } from "@atom-ide-community/nuclide-commons/observable"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 import * as React from "react"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import ThreadTreeNode from "./ThreadTreeNode"
 import { DebuggerMode } from "../constants"
 import { LoadingSpinnerSizes, LoadingSpinner } from "@atom-ide-community/nuclide-commons-ui/LoadingSpinner"

@@ -4,7 +4,7 @@ import classnames from "classnames"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 import * as React from "react"
 import { bindObservableAsProps } from "@atom-ide-community/nuclide-commons-ui/bindObservableAsProps"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import WatchExpressionComponent from "./WatchExpressionComponent"
 import { observableFromSubscribeFunction } from "@atom-ide-community/nuclide-commons/event"
 

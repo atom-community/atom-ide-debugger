@@ -10,7 +10,7 @@ import { NestedTreeItem, TreeItem } from "@atom-ide-community/nuclide-commons-ui
 import { observableFromSubscribeFunction } from "@atom-ide-community/nuclide-commons/event"
 import { fastDebounce } from "@atom-ide-community/nuclide-commons/observable"
 import * as React from "react"
-import { Observable, Subject } from "rxjs"
+import { Observable, Subject } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import { DebuggerMode } from "../constants"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 import { Expect } from "@atom-ide-community/nuclide-commons/expected"

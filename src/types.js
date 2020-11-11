@@ -29,7 +29,7 @@ SOFTWARE.
 */
 
 import type { Expected } from "@atom-ide-community/nuclide-commons/expected"
-import type { Observable } from "rxjs"
+import type { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import * as DebugProtocol from "vscode-debugprotocol"
 import type { IProcessConfig } from "@atom-ide-community/nuclide-debugger-common"
 

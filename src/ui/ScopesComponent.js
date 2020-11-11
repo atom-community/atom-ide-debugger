@@ -3,7 +3,7 @@ import type { Expected } from "@atom-ide-community/nuclide-commons/expected"
 
 import { bindObservableAsProps } from "@atom-ide-community/nuclide-commons-ui/bindObservableAsProps"
 import * as React from "react"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import { Section } from "@atom-ide-community/nuclide-commons-ui/Section"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 import { observableFromSubscribeFunction } from "@atom-ide-community/nuclide-commons/event"
