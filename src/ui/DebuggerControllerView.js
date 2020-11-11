@@ -4,7 +4,7 @@ import { observableFromSubscribeFunction } from "@atom-ide-community/nuclide-com
 import * as React from "react"
 import { LoadingSpinner } from "@atom-ide-community/nuclide-commons-ui/LoadingSpinner"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import { DebuggerMode } from "../constants"
 
 type Props = {

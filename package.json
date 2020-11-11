@@ -38,7 +38,6 @@
     "@atom-ide-community/nuclide-commons-ui": "^0.8.2",
     "nullthrows": "1.0.0",
     "react": "16.6.0",
-    "rxjs": "^5.5.9",
     "rxjs-compat": "6.3.3",
     "uuid": "3.0.1",
     "vscode-debugprotocol": "1.24.0"

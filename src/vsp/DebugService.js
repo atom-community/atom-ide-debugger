@@ -63,7 +63,7 @@ import {
   remoteToLocalProcessor,
   getVSCodeDebuggerAdapterServiceByNuclideUri,
 } from "@atom-ide-community/nuclide-debugger-common"
-import { Observable, Subject, TimeoutError } from "rxjs"
+import { Observable, Subject, TimeoutError } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import { TextEditorBanner } from "@atom-ide-community/nuclide-commons-ui/TextEditorBanner"
 import ReadOnlyNotice from "@atom-ide-community/nuclide-commons-ui/ReadOnlyNotice"
 import { track, startTracking } from "@atom-ide-community/nuclide-commons/analytics"

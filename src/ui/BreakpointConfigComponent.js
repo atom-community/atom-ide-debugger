@@ -8,7 +8,7 @@ import nuclideUri from "@atom-ide-community/nuclide-commons/nuclideUri"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 import { Checkbox } from "@atom-ide-community/nuclide-commons-ui/Checkbox"
 import { Modal } from "@atom-ide-community/nuclide-commons-ui/Modal"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import { track } from "@atom-ide-community/nuclide-commons/analytics"
 import { AnalyticsEvents } from "../constants"
 

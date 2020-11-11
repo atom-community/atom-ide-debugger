@@ -10,7 +10,7 @@ import { Button, ButtonTypes } from "@atom-ide-community/nuclide-commons-ui/Butt
 import { ButtonGroup } from "@atom-ide-community/nuclide-commons-ui/ButtonGroup"
 import { Dropdown } from "@atom-ide-community/nuclide-commons-ui/Dropdown"
 import Tabs from "@atom-ide-community/nuclide-commons-ui/Tabs"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import invariant from "assert"
 import { isNuclideEnvironment } from "../AtomServiceContainer"
 

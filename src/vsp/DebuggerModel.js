@@ -59,7 +59,7 @@ import { getVSCodeDebuggerAdapterServiceByNuclideUri } from "@atom-ide-community
 import * as DebugProtocol from "vscode-debugprotocol"
 import type { Expected } from "@atom-ide-community/nuclide-commons/expected"
 
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import uuid from "uuid"
 import nullthrows from "nullthrows"
 import invariant from "assert"

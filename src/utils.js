@@ -2,7 +2,7 @@ import type { IExpression, IEvaluatableExpression, IProcess, IStackFrame, Contex
 import type { Expected } from "@atom-ide-community/nuclide-commons/expected"
 
 import nullthrows from "nullthrows"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import logger from "./logger"
 import { Expect } from "@atom-ide-community/nuclide-commons/expected"
 

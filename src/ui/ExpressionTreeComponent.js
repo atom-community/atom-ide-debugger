@@ -11,7 +11,7 @@ import ignoreTextSelectionEvents from "@atom-ide-community/nuclide-commons-ui/ig
 import invariant from "assert"
 import nullthrows from "nullthrows"
 import { LoadingSpinner } from "@atom-ide-community/nuclide-commons-ui/LoadingSpinner"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import SimpleValueComponent from "@atom-ide-community/nuclide-commons-ui/SimpleValueComponent"
 import { STRING_REGEX } from "@atom-ide-community/nuclide-commons-ui/SimpleValueComponent"
 import { TreeList, TreeItem, NestedTreeItem } from "@atom-ide-community/nuclide-commons-ui/Tree"

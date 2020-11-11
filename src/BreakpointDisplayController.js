@@ -7,7 +7,7 @@ import { fastDebounce } from "@atom-ide-community/nuclide-commons/observable"
 import UniversalDisposable from "@atom-ide-community/nuclide-commons/UniversalDisposable"
 import { showMenuForEvent } from "@atom-ide-community/nuclide-commons-atom/ContextMenu"
 import classnames from "classnames"
-import { Observable } from "rxjs"
+import { Observable } from "rxjs-compat/bundles/rxjs-compat.umd.min.js"
 import { DebuggerMode } from "./constants"
 import featureConfig from "@atom-ide-community/nuclide-commons-atom/feature-config"
 
