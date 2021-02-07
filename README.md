@@ -8,12 +8,12 @@ Debugger for Atom IDE
 [![apm](https://img.shields.io/apm/v/atom-ide-debugger.svg)](https://github.com/atom-ide-community/atom-ide-debugger)
 
 ## Usage
+
 This is a work in progress. This is only tested with atom-ide-javascript and atom-ide-debugger. Once you install both, you can debug Node programs and see the result in the console.
 
 Currently, you should follow this GIF:
 
 ![debugger](https://user-images.githubusercontent.com/16418197/95936245-be136980-0d9a-11eb-9641-6c555ebd0662.gif)
-
 
 ## Roadmap
 
