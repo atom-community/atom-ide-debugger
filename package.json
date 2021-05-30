@@ -30,19 +30,19 @@
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
-    "atom-package-deps": "^6.0.0",
-    "idx": "1.2.0",
-    "immutable": "4.0.0-rc.9",
-    "invariant": "2.2.2",
-    "@atom-ide-community/nuclide-commons": "^0.8.2",
-    "@atom-ide-community/nuclide-commons-atom": "^0.8.2",
-    "@atom-ide-community/nuclide-debugger-common": "^0.8.2",
-    "@atom-ide-community/nuclide-commons-ui": "^0.8.2",
-    "nullthrows": "1.0.0",
-    "react": "16.6.0",
-    "rxjs-compat": "6.3.3",
-    "uuid": "3.0.1",
-    "vscode-debugprotocol": "1.24.0"
+    "atom-package-deps": "^7.2.3",
+    "idx": "2.5.6",
+    "immutable": "4.0.0-rc.12",
+    "invariant": "2.2.4",
+    "@atom-ide-community/nuclide-commons": "^0.8.3",
+    "@atom-ide-community/nuclide-commons-atom": "^0.8.3",
+    "@atom-ide-community/nuclide-debugger-common": "^0.8.3",
+    "@atom-ide-community/nuclide-commons-ui": "^0.8.3",
+    "nullthrows": "1.1.1",
+    "react": "17.0.2",
+    "rxjs-compat": "6.6.7",
+    "uuid": "8.3.2",
+    "vscode-debugprotocol": "1.47.0"
   },
   "devDependencies": {
     "@types/atom": "1.40.10",
